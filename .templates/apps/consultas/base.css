@@ -1,0 +1,46 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho total do elemento */
+}
+
+:root {
+    --color-1: #1e3545;
+    --color-2: #33697b;
+    --color-3: #ffffff;
+    --color-4: #868b94;
+    --color-5: #e0e0dd;
+    --color-6: #f0f0f5;
+}
+
+/* Estilo padrão para o HTML */
+html {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: #eceaea;
+}
+
+/* Estilos para o corpo da página */
+body {
+    min-height: 100vh; /* Garante que o corpo da página ocupe pelo menos a altura da janela visível */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo para as imagens dentro dos links */
+a img {
+    border: none; /* Remove borda padrão das imagens dentro dos links */
+}
+
+/* Estilos para o rodapé */
+footer {
+    background-color: var(--color-1);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
