@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.consultas.apps.ConsultasConfig',
+    'apps.vendas.siape.apps.SiapeConfig',
 ]
 
 MIDDLEWARE = [
