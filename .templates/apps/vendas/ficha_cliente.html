@@ -162,9 +162,13 @@
                             <label for="valorPrestacao">Valor da Prestação:</label>
                             <input type="text" id="valorPrestacao" class="form-control">
                         </div>
+
+                        <div class="form-group">
+                            <label for="valorFinanciado">Valor financiado:</label>
+                            <input type="text" id="valorFinanciado" class="form-control">
+                        </div>
                         
                         <button class="btn btn-primary btn-sm" onclick="calcularFinanciamento()">Calcular</button>
-                        <button type="button" class="btn btn-secondary btn-sm" id="limpar-calculadora-btn">Limpar</button>
                     </div>
                 </div>
                 
@@ -185,19 +189,93 @@ function calcularValorLiberado() {
     }
 }
 
-function calcularFinanciamento() {
-    var numMeses = parseInt(document.getElementById('numMeses').value);
-    var taxaJuros = parseFloat(document.getElementById('taxaJuros').value) / 100;
-    var valorPrestacao = parseFloat(document.getElementById('valorPrestacao').value);
-    var valorFinanciado = (((1 - Math.pow((1 + taxaJuros), -numMeses)) / taxaJuros) * valorPrestacao).toFixed(2);
-    document.getElementById('valorFinanciado').value = 'R$ ' + valorFinanciado;
+//calculo cidadao
+// Função para calcular o número de meses
+function calculateNumberOfMonths(q0, p, j) {
+    j = j / 100; // Converte taxa de juros para decimal
+    let n = Math.log(p / (p - j * q0)) / Math.log(1 + j);
+    return Math.ceil(n); // Arredonda para cima
 }
 
-document.getElementById('limpar-calculadora-btn').addEventListener('click', function() {
-    document.getElementById('numMeses').value = '';
-    document.getElementById('taxaJuros').value = '';
-    document.getElementById('valorPrestacao').value = '';
-    document.getElementById('valorFinanciado').value = '';
-});
+// Função para calcular a taxa de juros mensal
+function calculateMonthlyInterestRate(q0, p, n, tolerance = 0.000001) {
+    let jLow = 0;
+    let jHigh = 1;
+    let jMid = (jLow + jHigh) / 2;
+
+    while ((jHigh - jLow) > tolerance) {
+        let calculatedP = (jMid * q0) / (1 - Math.pow(1 + jMid, -n));
+        if (calculatedP > p) {
+            jHigh = jMid;
+        } else {
+            jLow = jMid;
+        }
+        jMid = (jLow + jHigh) / 2;
+    }
+        
+    return jMid * 100; // Converte de decimal para porcentagem
+}
+
+// Função para calcular o valor da prestação
+function calculateInstallment(q0, n, j) {
+    j = j / 100; // Converte taxa de juros para decimal
+    let p = (j * q0) / (1 - Math.pow(1 + j, -n));
+    return p;
+}
+
+// Função para calcular o valor financiado
+function calculateFinancedAmount(p, n, j) {
+    j = j / 100; // Converte taxa de juros para decimal
+    let q0 = (1 - Math.pow(1 + j, -n)) / j * p;
+    return q0;
+}
+
+// Função para determinar qual cálculo realizar
+function calcularFinanciamento() {
+    let numMeses = document.getElementById('numMeses').value;
+    let taxaJuros = document.getElementById('taxaJuros').value;
+    let valorPrestacao = document.getElementById('valorPrestacao').value;
+    let valorFinanciado = document.getElementById('valorFinanciado').value;
+
+    // Contagem de inputs vazios
+    let emptyCount = [numMeses, taxaJuros, valorPrestacao, valorFinanciado].filter(x => x === "").length;
+
+    if (emptyCount !== 1) {
+        alert('Por favor, preencha exatamente 3 campos.');
+        return;
+    }
+
+    // Chama a função correta com base nos inputs preenchidos
+    if (numMeses === "") {
+        let q0 = parseFloat(valorFinanciado);
+        let p = parseFloat(valorPrestacao);
+        let j = parseFloat(taxaJuros);
+        let n = calculateNumberOfMonths(q0, p, j);
+        //alert('Número de meses: ' + n);
+        document.getElementById('numMeses').value = n;
+    } else if (taxaJuros === "") {
+        let q0 = parseFloat(valorFinanciado);
+        let p = parseFloat(valorPrestacao);
+        let n = parseInt(numMeses);
+        let j = calculateMonthlyInterestRate(q0, p, n);
+        //alert('Taxa de juros mensal: ' + j.toFixed(2) + '%');
+        document.getElementById('taxaJuros').value = j.toFixed(2);
+    } else if (valorPrestacao === "") {
+        let q0 = parseFloat(valorFinanciado);
+        let n = parseInt(numMeses);
+        let j = parseFloat(taxaJuros);
+        let p = calculateInstallment(q0, n, j);
+        //alert('Valor da prestação: ' + p.toFixed(2));
+        document.getElementById('valorPrestacao').value = p.toFixed(2);
+    } else if (valorFinanciado === "") {
+        let p = parseFloat(valorPrestacao);
+        let n = parseInt(numMeses);
+        let j = parseFloat(taxaJuros);
+        let q0 = calculateFinancedAmount(p, n, j);
+        //alert('Valor financiado: ' + q0.toFixed(2));
+        document.getElementById('valorFinanciado').value = q0.toFixed(2);
+    }
+}
+
 </script>
 {% endblock %}
