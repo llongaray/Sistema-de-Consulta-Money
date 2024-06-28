@@ -1,19 +1,9 @@
-/* Estilo personalizado */
-:root {
-    --cor-primaria: #4A90E2; /* Azul Primário */
-    --cor-secundaria: #50E3C2; /* Verde Secundário */
-    --cor-texto: #333333; /* Cor do Texto */
-    --cor-fundo-card: #FFFFFF; /* Fundo do Card */
-    --cor-botao: #4A90E2; /* Fundo do Botão */
-    --cor-botao-hover: #50E3C2; /* Fundo do Botão Hover */
-    --cor-fundo-modal: rgba(0, 0, 0, 0.5); /* Fundo do Modal */
-    --cor-fundo-modal-conteudo: #FFFFFF; /* Fundo do Conteúdo do Modal */
-    --cor-borda-modal-conteudo: #CCCCCC; /* Borda do Conteúdo do Modal */
-}
+/* styles da template index.html*/
+@import url('colors.css');
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
+    font-family: var(--fonte-principal);
+    background-color: var(--cor-branco-color-6);
     color: var(--cor-texto);
     margin: 0;
     padding: 0;
@@ -29,8 +19,8 @@ body {
     padding: 20px;
     margin-bottom: 15px;
     background-color: var(--cor-primaria);
-    color: white;
-    border-radius: 5px;
+    color: var(--cor-branco);
+    border-radius: var(--border-radius-tamanho);
 }
 
 /* Slider */
@@ -47,8 +37,8 @@ body {
 .customer-logos.slider .slide .gallery-cell {
     background-color: var(--cor-fundo-card);
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius-tamanho-grande);
+    box-shadow: 0 4px 8px var(--cor-box-shadow);
     padding: 20px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -62,17 +52,17 @@ body {
 
 .customer-logos.slider .slide .gallery-cell:hover {
     transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px var(--cor-box-shadow);
 }
 
 .customer-logos.slider .slide .gallery-cell i {
-    font-size: 36px;
+    font-size: var(--fonte-tamanho-subtitulo);
     margin-bottom: 15px;
     color: var(--cor-primaria);
 }
 
 .customer-logos.slider .slide .gallery-cell p {
-    font-size: 16px;
+    font-size: var(--fonte-tamanho-texto);
     margin: 10px 0;
     padding: 0;
     color: var(--cor-texto);
@@ -80,12 +70,12 @@ body {
 
 .customer-logos.slider .slide .gallery-cell .button-modal {
     background-color: var(--cor-botao);
-    color: white;
+    color: var(--cor-branco);
     border: none;
     padding: 10px 20px;
     margin-top: 10px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: var(--border-radius-tamanho);
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -178,10 +168,10 @@ body {
 .modal-content {
     background-color: var(--cor-fundo-modal-conteudo);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: var(--border-radius-tamanho-grande);
     max-width: 600px;
     width: 80%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px var(--cor-box-shadow);
     position: relative;
     color: var(--cor-texto);
     max-height: calc(100% - 40px);
@@ -199,7 +189,7 @@ body {
     top: 10px;
     right: 10px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 20px; /* fonte unica com este tamanho */
     color: var(--cor-texto);
 }
 
@@ -221,11 +211,11 @@ body {
 
 .modal-content form button[type="submit"] {
     background-color: var(--cor-botao);
-    color: white;
+    color: var(--cor-branco);
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: var(--border-radius-tamanho);
     transition: background-color 0.3s ease;
 }
 
@@ -238,9 +228,9 @@ body {
 .danger-alert {
     display: none;
     background-color: #ffdddd;
-    color: #d8000c;
-    border: 1px solid #d8000c;
+    color: var(--cor-vermelho);
+    border: 1px solid var(--cor-vermelho);
     padding: 10px;
     margin-bottom: 20px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-tamanho);
 }

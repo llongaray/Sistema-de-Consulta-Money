@@ -13,6 +13,7 @@
     --cor-azul-acinzentado-escuro: #1e3545;  /* Azul Acinzentado Escuro */
     --cor-verde: #2aa848; /* Verde */
     --cor-verde-agua: #50E3C2; /* Verde Água */
+    --cor-verde-apagado: #c3e6cb; /* Verde Apagado */
     --cor-vermelho: #d8000c; /* Vermelho */
     --cor-amarelo: #ffcc00; /* Amarelo */
     --cor-amarelo-alaranjado: #ffa500; /* Amarelo Alaranjado */
@@ -56,6 +57,10 @@
     /* alertas */
     --cor-alerta: var(--cor-amarelo);
     --cor-alerta-fundo: var(--cor-amarelo-alaranjado);
+    --cor-alerta-sucesso: var(var(--cor-branco));
+    --cor-alerta-sucesso-fundo: var(var(--cor-verde));
+    --cor-alerta-sucesso-borda: var(--cor-verde-apagado);
+    
 
     /* -- -- -- -- */
 

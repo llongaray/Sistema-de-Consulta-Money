@@ -1,3 +1,6 @@
+/* styles da template base.html */
+@import url('colors.css');
+
 /* Estilos para o menu de navegação */
 #menu-navbar {
     background-color: var(--color-1);
@@ -43,14 +46,14 @@
 }
 
 #menu ul li {
-    font-size: 18px;
+    font-size: var(--fonte-tamanho-lista);
 }
 
 #menu ul li a {
     text-decoration: none;
     color: var(--color-3);
     padding: 10px 15px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-tamanho);
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -65,7 +68,7 @@
     justify-content: center;
     align-items: center;
     flex: 1;
-    font-size: 16px;
+    font-size: var(--fonte-tamanho-texto);
 }
 
 #login-logout p {
@@ -76,10 +79,10 @@
     text-decoration: none;
     color: var(--color-3);
     padding: 10px 15px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-tamanho);
     transition: background-color 0.3s, color 0.3s;
 }
 
 #login-logout a:hover {
-    color: blue;
+    color: var(--cor-azul-escuro);
 }
