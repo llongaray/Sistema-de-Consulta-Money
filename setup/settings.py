@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.consultas.apps.ConsultasConfig',
     'apps.vendas.siape.apps.SiapeConfig',
+    'apps.ranking.apps.RankingConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,45 @@
+{% extends "bases/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% url 'dashboard.css' %}">
+{% endblock %}
+{% block content %}
+
+<section class="dashboard-containt">
+    <div class="slides">
+        <div class="slider">
+            <div class="card">
+                <div class="red-bar"></div>
+                <div class="content">
+                    <h3>Clientes Cadastrados</h3>
+                    <p>Base Solida</p>
+                    <span>{{ info.clients }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="slider">
+            <div class="card">
+                <div class="red-bar"></div>
+                <div class="content">
+                    <h3>Debitos Adicionados</h3>
+                    <p>Base Solida</p>
+                    <span>{{ info.debitos }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="slider">
+            <div class="card">
+                <div class="red-bar"></div>
+                <div class="content">
+                    <h3>Usuario</h3>
+                    <i class="fa fas-circle"></i><p>online</p>
+                    <span>{{ info.users }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,25 +1,38 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta tags para configuração do documento -->
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configura o viewport para dispositivos móveis -->
+    
+    <!-- Bloco para adicionar título específico em páginas filhas -->
     {% block addtitle %}{% endblock %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="shortcut icon" href="{% static 'logo.png' %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static 'base.css' %}">
-    <link rel="stylesheet" href="{% static 'menu.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-D7a7v08t8PR0N0Ct1NQmVKR2BtqS9rBU2K4qj5SAFceh2TF44p4ZdjwF8XzNDBIQkJ0IG4KfYq2U5L2S3OLQsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    
+    <!-- Links para arquivos de estilos locais -->
+    <link rel="shortcut icon" href="{% static 'logo.png' %}" type="image/x-icon"> <!-- Define o ícone do site -->
+    <link rel="stylesheet" href="{% static 'base.css' %}"> <!-- Inclui o arquivo de estilo base -->
+    <link rel="stylesheet" href="{% static 'menu.css' %}"> <!-- Inclui o arquivo de estilo para o menu -->
+    
+    <!-- Link para estilos externos (fontes e ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Inclui ícones do Font Awesome -->
+    
+    <!-- Bloco para adicionar estilos extras específicos em páginas filhas -->
     {% block addcss_extra %}{% endblock %}
 </head>
 <body>
+    <!-- Inclui o menu de navegação -->
     {% include 'partials/_menu.html' %}
+    
     <main>
+        <!-- Bloco para inserir o conteúdo específico de cada página -->
         {% block content %}{% endblock %}
     </main>
+    
+    <!-- Inclui o rodapé -->
     {% include 'partials/_footer.html' %}
+    
+    <!-- Bloco para adicionar scripts extras específicos em páginas filhas -->
     {% block addjs_extra %}{% endblock %}
 </body>
 </html>

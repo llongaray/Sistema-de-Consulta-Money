@@ -1,0 +1,108 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block addtitle %}Money System - Importe Consultores{% endblock %}
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'importe_consultores.css' %}">
+{% endblock %}
+{% block content %}
+<form id="consultoresForm">
+    {% csrf_token %}
+    <div id="formContainer">
+        <div class="formItem">
+            <label>Nome:</label><input type="text" name="nome">
+            <label>Setor:</label><input type="text" name="setor">
+            <label>Ramal:</label><input type="text" name="ramal">
+            <label>Campanha:</label><input type="text" name="campanha">
+            <button type="button" class="addForm">+</button>
+            <button type="button" class="removeForm">-</button>
+        </div>
+    </div>
+    <button type="button" id="submitConsultores">Adicionar Consultor</button>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Função para adicionar um novo formulário
+        function addForm() {
+            let formItem = `
+                <div class="formItem">
+                    <label>Nome:</label><input type="text" name="nome">
+                    <label>Setor:</label><input type="text" name="setor">
+                    <label>Ramal:</label><input type="text" name="ramal">
+                    <label>Campanha:</label><input type="text" name="campanha">
+                    <button type="button" class="addForm">+</button>
+                    <button type="button" class="removeForm">-</button>
+                </div>
+            `;
+            $('#formContainer').append(formItem);
+        }
+
+        // Função para remover um formulário
+        function removeForm(button) {
+            $(button).closest('.formItem').remove();
+        }
+
+        // Evento para adicionar formulário
+        $(document).on('click', '.addForm', function() {
+            addForm();
+        });
+
+        // Evento para remover formulário
+        $(document).on('click', '.removeForm', function() {
+            removeForm(this);
+        });
+
+        // Função para obter o token CSRF
+        function getCSRFToken() {
+            return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        }
+
+        // Evento para enviar o formulário
+        $('#submitConsultores').click(function() {
+            let forms = [];
+            $('#formContainer .formItem').each(function() {
+                let formData = {
+                    nome: $(this).find('input[name="nome"]').val(),
+                    setor: $(this).find('input[name="setor"]').val(),
+                    ramal: $(this).find('input[name="ramal"]').val(),
+                    campanha: $(this).find('input[name="campanha"]').val()
+                };
+                forms.push(formData);
+            });
+
+            // Verificar se todos os campos estão preenchidos
+            let valid = true;
+            for (let form of forms) {
+                if (!form.nome || !form.setor || !form.ramal || !form.campanha) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (!valid) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Enviar dados via AJAX
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ranking:import_consultores" %}',
+                data: {
+                    forms: JSON.stringify(forms),
+                    csrfmiddlewaretoken: getCSRFToken()
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert('Consultores adicionados com sucesso!');
+                        window.location.reload();
+                    } else {
+                        alert('Erro ao adicionar consultores: ' + response.message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
