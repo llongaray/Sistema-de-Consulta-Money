@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block addtitle %}{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="shortcut icon" href="{% static 'logo.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'menu.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-D7a7v08t8PR0N0Ct1NQmVKR2BtqS9rBU2K4qj5SAFceh2TF44p4ZdjwF8XzNDBIQkJ0IG4KfYq2U5L2S3OLQsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {% block addcss_extra %}{% endblock %}
+</head>
+<body>
+    {% include 'partials/_menu.html' %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    {% include 'partials/_footer.html' %}
+    {% block addjs_extra %}{% endblock %}
+</body>
+</html>

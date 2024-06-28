@@ -1,0 +1,203 @@
+{% extends "bases/base.html" %}
+{% load static %}
+
+{% block title %}Ficha do Cliente{% endblock %}
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'consultas.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-D7a7v08t8PR0N0Ct1NQmVKR2BtqS9rBU2K4qj5SAFceh2TF44p4ZdjwF8XzNDBIQkJ0IG4KfYq2U5L2S3OLQsg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Resultado da Consulta</h2>
+    <h4 class="alert alert-success">Consulta realizada com sucesso!</h4>
+    <div class="title-icone ficha">
+        <i class="fas fa-clipboard"></i>
+        <h3>Ficha do Cliente</h3>
+    </div>
+    
+    
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Contratos de Empréstimo</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Banco</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Prazo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for debito in context_debitos %}
+                    <tr>
+                        <td>{{ debito.banco_cliente }}</td>
+                        <td>R$ {{ debito.valor_cliente|floatformat:"2" }}</td>
+                        <td>{{ debito.prazo_cliente }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">Nenhum contrato de empréstimo encontrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Informações Cadastrais</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="aline-between">
+                        <span>
+                            <p class="bold-title">Nome:</p><p class="containt-info">{{ context_info.nome_cliente }}</p>
+                        </span>
+                        <span>
+                            <p class="bold-title">CPF:</p><p class="containt-info">{{ context_info.cpf_cliente }}</p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Estado (UF):</p><p class="containt-info">{{ context_info.uf_cliente }}</p>
+                        </span>
+                    </div>
+                    <div class="aline-between">
+                        <span>
+                            <p class="bold-title">Cidade:</p><p class="containt-info">{{ context_info.cidade_cliente }}</p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Telefone:</p><p class="containt-info">{{ context_info.telefone_cliente }}</p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Idade:</p><p class="containt-info">{{ context_info.idade_cliente }}</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Margem Consignável</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    {% for debito in context_debitos %}
+                    <div class="aline-between">
+                        <span>
+                            <p class="bold-title">Margem 30%:</p><p class="containt-info">R$ {{ debito.valor_cliente|floatformat:"2" }}</p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Margem 5%:</p><p class="containt-info">R$ {{ debito.margem_cartao_cliente|floatformat:"2" }}</p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Situação:</p><p class="containt-info">{{ debito.situacao_cliente }}</p>
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>Simulador</h3>
+        </div>
+        
+        <div class="title-icone novo-emprestimo">
+            <i class="fas fa-money-check-alt"></i>
+            <h3>Novo Empréstimo</h3>
+        </div>
+        
+        
+        <div class="card-body calc-marge">
+            <div class="row calc-marge-row">
+                <div class="col-md-6 calc-marge-sm">
+                    <div class="aline-between calc-marge-sm-2">
+                        <span>
+                            <p class="bold-title">Margem 30%:</p>
+                            <p><input type="text" id="coeficiente" placeholder="Digite aqui"></p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Coeficiente do Dia:</p>
+                            <p><input type="text" id="coeficiente" placeholder="Digite aqui"></p>
+                        </span>
+                        <span>
+                            <p class="bold-title">Valor Liberado:</p>
+                            <p><input type="text" id="coeficiente" placeholder="Digite aqui"></p>
+                        </span>
+                    </div>
+                    <button class="btn btn-primary" onclick="calcularValorLiberado()">Calcular</button>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="title-icone">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Calculadora do Cidadão - Banco Central</h3>
+                    </div>
+                    <div class="calc-cid-bc aline-between">
+                        <img src="{% static 'logo-banco.png' %}" alt="Logo Banco Central" class="mb-2 logo-banco">
+                        
+                        <div class="form-group">
+                            <label for="numMeses">Nº de Meses:</label>
+                            <input type="text" id="numMeses" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="taxaJuros">Taxa de Juros Mensal:</label>
+                            <input type="text" id="taxaJuros" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="valorPrestacao">Valor da Prestação:</label>
+                            <input type="text" id="valorPrestacao" class="form-control">
+                        </div>
+                        
+                        <button class="btn btn-primary btn-sm" onclick="calcularFinanciamento()">Calcular</button>
+                        <button type="button" class="btn btn-secondary btn-sm" id="limpar-calculadora-btn">Limpar</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+
+<script>
+function calcularValorLiberado() {
+    var margem30 = parseFloat("{{ context_info.margem_cliente }}");
+    var coeficiente = parseFloat(document.getElementById('coeficiente').value);
+    if (!isNaN(margem30) && !isNaN(coeficiente)) {
+        var valorLiberado = margem30 * (coeficiente / 100);
+        document.getElementById('valorLiberado').textContent = 'R$ ' + valorLiberado.toFixed(2);
+    } else {
+        alert('Por favor, preencha os campos corretamente.');
+    }
+}
+
+function calcularFinanciamento() {
+    var numMeses = parseInt(document.getElementById('numMeses').value);
+    var taxaJuros = parseFloat(document.getElementById('taxaJuros').value) / 100;
+    var valorPrestacao = parseFloat(document.getElementById('valorPrestacao').value);
+    var valorFinanciado = (((1 - Math.pow((1 + taxaJuros), -numMeses)) / taxaJuros) * valorPrestacao).toFixed(2);
+    document.getElementById('valorFinanciado').value = 'R$ ' + valorFinanciado;
+}
+
+document.getElementById('limpar-calculadora-btn').addEventListener('click', function() {
+    document.getElementById('numMeses').value = '';
+    document.getElementById('taxaJuros').value = '';
+    document.getElementById('valorPrestacao').value = '';
+    document.getElementById('valorFinanciado').value = '';
+});
+</script>
+{% endblock %}
