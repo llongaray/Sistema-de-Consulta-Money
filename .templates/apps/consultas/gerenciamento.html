@@ -1,0 +1,212 @@
+{% extends "bases/base.html" %}
+{% load static %}
+{% block addtitle %}
+<title>Money System - Gerenciamento</title>
+{% endblock %}
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'cards.css' %}">
+{% endblock %}
+
+{% block content %}
+<section id="bloco-consulta">
+    <div class="container-slides">
+        <h2>Gerenciamento do Sistema de Consulta ao Cliente</h2>
+        <section class="customer-logos slider">
+            <div class="slide">
+                <div class="gallery-cell card" data-modal="modal-1">
+                    <i class="fas fa-database"></i>
+                    <h3>Base Bruta</h3>
+                    <p>Importe arquivo CSV</p>
+                    <button class="button-modal">Abrir Modal</button>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="gallery-cell card" data-modal="modal-2">
+                    <i class="fas fa-user"></i>
+                    <h3>Base Campanha SIAPE</h3>
+                    <p>Importe arquivo CSV</p>
+                    <button class="button-modal">Abrir Modal</button>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="gallery-cell card" data-modal="modal-3">
+                    <i class="fas fa-file-csv"></i>
+                    <h3>Base Campanha INSS POA</h3>
+                    <p>Importe arquivo CSV</p>
+                    <button class="button-modal">Abrir Modal</button>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="gallery-cell card" data-modal="modal-4">
+                    <i class="fas fa-file-csv"></i>
+                    <h3>Base Campanha INSS SLE</h3>
+                    <p>Importe arquivo CSV</p>
+                    <button class="button-modal">Abrir Modal</button>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="gallery-cell card" data-modal="modal-5">
+                    <i class="fas fa-file-csv"></i>
+                    <h3>Base Campanha INSS SM</h3>
+                    <p>Importe arquivo CSV</p>
+                    <button class="button-modal">Abrir Modal</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="container-modals">
+        <!-- Modais -->
+        <div id="modal-1" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Base Bruta</h2>
+                <form id="form-upload-csv-1" action="{% url 'consulta:gerenciamento' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="csv_file" accept=".csv" required>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <div id="modal-2" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Base Campanha SIAPE</h2>
+                <p class="alert-manutecao">Sistema em desenvolvimento</p>
+            </div>
+        </div>
+        <div id="modal-3" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Base Campanha INSS POA</h2>
+                <p class="alert-manutecao">Sistema em desenvolvimento</p>
+            </div>
+        </div>
+        <div id="modal-4" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Base Campanha INSS SLE</h2>
+                <p class="alert-manutecao">Sistema em desenvolvimento</p>
+            </div>
+        </div>
+        <div id="modal-5" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Base Campanha INSS SM</h2>
+                <p class="alert-manutecao">Sistema em desenvolvimento</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block addjs_extra %}
+<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+
+<script>
+    $(document).ready(function() {
+    // Configuração do Slick Carousel
+    $('.customer-logos.slider').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: false,
+        autoplaySpeed: 1500,
+        arrows: false,
+        dots: false,
+        pauseOnHover: false,
+        responsive: [
+            { breakpoint: 768, settings: { slidesToShow: 2 } },
+            { breakpoint: 520, settings: { slidesToShow: 1 } }
+        ]
+    });
+
+    // Script para abrir os modais ao clicar nos botões dentro dos cards
+    var cards = document.querySelectorAll('.button-modal');
+    var modais = document.querySelectorAll('.modal');
+    var closeBtns = document.querySelectorAll('.close-btn');
+
+    cards.forEach(function(card, index) {
+        card.addEventListener('click', function() {
+            var modalId = card.parentElement.getAttribute('data-modal');
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+        });
+    });
+
+    closeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            modais.forEach(function(modal) {
+                modal.style.display = 'none';
+            });
+        });
+    });
+
+    window.addEventListener('click', function(e) {
+        modais.forEach(function(modal) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+
+    // Lógica para enviar o formulário de cadastro via AJAX
+    var formCadastro = document.getElementById('form-cadastro');
+    formCadastro.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(formCadastro);
+        var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        $.ajax({
+            url: formCadastro.action,
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                modais.forEach(function(modal) {
+                    modal.style.display = 'none';
+                });
+                location.reload(); // Recarrega a página para atualizar a lista de funcionários
+            },
+            error: function(xhr, status, error) {
+                alert('Ocorreu um erro ao cadastrar o funcionário. Por favor, tente novamente.');
+            }
+        });
+    });
+
+    // Envio do formulário de upload de CSV via AJAX
+    var formUploadCsv = document.getElementById('form-upload-csv');
+    formUploadCsv.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(formUploadCsv);
+        var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        $.ajax({
+            url: formUploadCsv.action,
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                modais.forEach(function(modal) {
+                    modal.style.display = 'none';
+                });
+                location.reload(); // Recarrega a página após o upload do CSV
+            },
+            error: function(xhr, status, error) {
+                alert('Ocorreu um erro ao enviar o arquivo CSV. Por favor, tente novamente.');
+            }
+        });
+    });
+});
+
+</script>
+{% endblock %}

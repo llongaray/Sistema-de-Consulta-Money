@@ -1,0 +1,79 @@
+@import url('colors.css');
+
+main {
+    font-family: var(--fonte-principal);
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 55px 0;
+}
+
+.container-ficha {
+    width: 75vw;
+    margin: 20px 10px;
+    padding: 10px 25px;
+    box-shadow: 0 0 10px var(--cor-box-shadow);
+    background-color: var(--cor-fundo-card);
+    border-radius: var(--border-radius-tamanho);
+    overflow-x: hidden;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--cor-cinza-claro);
+    margin-bottom: 20px;
+    position: relative;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+}
+.tab.active {
+    font-weight: bold;
+    color: var(--cor-primaria);
+}
+.tab-slider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    background-color: var(--cor-primaria);
+    transition: left 0.3s ease;
+}
+.content {
+    display: none;
+}
+.content.active {
+    display: block;
+}
+.info-cliente {
+    margin-bottom: 20px;
+}
+.cards {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.card {
+    border: 1px solid var(--cor-cinza-claro);
+    padding: 10px;
+    flex: 1;
+    background-color: var(--cor-fundo-card);
+}
+.calculator {
+    margin-top: 20px;
+}
+.calculator label {
+    display: inline-block;
+    width: 150px;
+}
+.calculator input {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid var(--cor-cinza-claro);
+    border-radius: var(--border-radius-tamanho);
+}

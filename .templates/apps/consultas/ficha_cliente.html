@@ -1,0 +1,120 @@
+{% extends "bases/base.html" %}
+{% load static %}
+
+{% block title %}Ficha do Cliente{% endblock %}
+
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'ficha.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="container-ficha">
+    <div class="tabs">
+        <div class="tab active" data-tab="matricula1">Matricula 1</div>
+        <div class="tab" data-tab="matricula2">Matricula 2</div>
+        <div class="tab-slider"></div>
+    </div>
+    
+    <div class="info-cliente">
+        <h2>Informações do Cliente</h2>
+        <p>Nome: {{ cliente.nome }}</p>
+        <p>CPF: {{ cliente.cpf }}</p>
+        <p>UF: {{ cliente.uf }}</p>
+        <p>Matrícula Instituidor: {{ cliente.matricula_instituidor }}</p>
+        <p>UPAG: {{ cliente.upag }}</p>
+        <p>Situação Funcional: {{ cliente.situacao_funcional }}</p>
+        <p>RJUR: {{ cliente.rjur }}</p>
+    </div>
+    
+    <div class="cards">
+        <div class="card">
+            <h3>Margem Empréstimo 35%</h3>
+            <p>{{ cliente.margem_emprestimo_35 }}</p>
+        </div>
+        <div class="card">
+            <h3>Margem Cartão 5%</h3>
+            <p>{{ cliente.margem_cartao_5 }}</p>
+        </div>
+        <div class="card">
+            <h3>Margem Benefício 5%</h3>
+            <p>{{ cliente.margem_beneficio_5 }}</p>
+        </div>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="debitos">Débitos</div>
+        <div class="tab" data-tab="calc-margem">Calculadora de Margem</div>
+        <div class="tab" data-tab="calc-bcb">Calculadora do Banco Central</div>
+        <div class="tab-slider"></div>
+    </div>
+    
+    <div class="content active" id="debitos">
+        <h2>Débitos</h2>
+        <table>
+            <tr>
+                <th>BANCO</th>
+                <th>ORGAO</th>
+                <th>PMT</th>
+                <th>PRAZO</th>
+                <th>TIPO CONTRATO</th>
+                <th>CONTRATO</th>
+                <th>Créditos</th>
+                <th>Débitos</th>
+                <th>Líquido</th>
+                <th>EXC Soma</th>
+                <th>Sit Func</th>
+                <th>Margem</th>
+            </tr>
+            {% for debito in cliente.debitos %}
+            <tr>
+                <td>{{ debito.banco }}</td>
+                <td>{{ debito.orgao }}</td>
+                <td>{{ debito.pmt }}</td>
+                <td>{{ debito.prazo }}</td>
+                <td>{{ debito.tipo_contrato }}</td>
+                <td>{{ debito.contrato }}</td>
+                <td>{{ debito.creditos }}</td>
+                <td>{{ debito.debitos }}</td>
+                <td>{{ debito.liquido }}</td>
+                <td>{{ debito.exc_soma }}</td>
+                <td>{{ debito.sit_func }}</td>
+                <td>{{ debito.margem }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+    <div class="content" id="calc-margem">
+        <h2>Calculadora de Margem</h2>
+        <div class="calculator">
+            <label for="margem">Margem 35%:</label>
+            <input type="text" id="margem"><br>
+            <label for="coeficiente">Coeficiente do dia:</label>
+            <input type="text" id="coeficiente"><br>
+            <label for="valor-liberado">Valor liberado:</label>
+            <input type="text" id="valor-liberado" disabled><br>
+            <button onclick="calcularMargem('margem', 'coeficiente', 'valor-liberado')">Calcular</button>
+        </div>
+    </div>
+    
+    <div class="content" id="calc-bcb">
+        <h2>Calculadora do Banco Central</h2>
+        <div class="calculator">
+            <label for="meses">Nº de Meses:</label>
+            <input type="text" id="meses"><br>
+            <label for="taxa-juros">Taxa de Juros Mensal (%):</label>
+            <input type="text" id="taxa-juros"><br>
+            <label for="prestacao">Valor da Prestação:</label>
+            <input type="text" id="prestacao"><br>
+            <label for="financiado">Valor do Financiado:</label>
+            <input type="text" id="financiado"><br>
+            <button onclick="calcularBancoCentral('meses', 'taxa-juros', 'prestacao', 'financiado')">Calcular</button>
+            <button onclick="limparBancoCentral('meses', 'taxa-juros', 'prestacao', 'financiado')">Limpar</button>
+            <button onclick="imprimirBancoCentral()">Imprimir</button>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'ficha.js' %}"></script>
+{% endblock %}
