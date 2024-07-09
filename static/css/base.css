@@ -1,3 +1,5 @@
+/* base.css */
+
 /* Reset básico */
 * {
     margin: 0;
@@ -5,21 +7,15 @@
     box-sizing: border-box; /* Garante que o padding não aumente o tamanho total do elemento */
 }
 
-:root {
-    --color-1: #1e3545;
-    --color-2: #33697b;
-    --color-3: #ffffff;
-    --color-4: #868b94;
-    --color-5: #e0e0dd;
-    --color-6: #f0f0f5;
-}
+/* Importando variáveis de cores */
+@import url('colors.css');
 
 /* Estilo padrão para o HTML */
 html {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-family: var(--fonte-arial);
+    font-size: var(--fonte-tamanho-texto);
     line-height: 1.6;
-    background-color: #eceaea;
+    background-color: var(--color-5); /* Usando cor de fundo padrão */
 }
 
 /* Estilos para o corpo da página */
@@ -29,15 +25,15 @@ body {
     flex-direction: column;
 }
 
-/* Estilo para as imagens dentro dos links */
+/* Estilos para os links */
 a img {
     border: none; /* Remove borda padrão das imagens dentro dos links */
 }
 
 /* Estilos para o rodapé */
 footer {
-    background-color: var(--color-1);
-    color: #fff;
+    background-color: var(--color-1); /* Usando cor principal */
+    color: var(--color-3); /* Usando cor do texto */
     padding: 20px;
     text-align: center;
     position: fixed;

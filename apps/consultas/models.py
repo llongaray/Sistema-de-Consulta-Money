@@ -15,16 +15,13 @@ class Cliente(models.Model):
 class MatriculaDebitos(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='matriculas')
     matricula = models.CharField(max_length=50, null=True, blank=True)
-    debito = models.CharField(max_length=50, null=True, blank=True)
+    rubrica = models.CharField(max_length=50, null=True, blank=True)  # Renomeado de debito para rubrica
     banco = models.CharField(max_length=100, null=True, blank=True)
     orgao = models.CharField(max_length=100, null=True, blank=True)
     pmt = models.FloatField(null=True, blank=True)
-    prazo = models.IntegerField(null=True, blank=True)
+    prazo = models.CharField(max_length=50, null=True, blank=True)
     tipo_contrato = models.CharField(max_length=50, null=True, blank=True)
     contrato = models.CharField(max_length=50, null=True, blank=True)
-    creditos = models.FloatField(null=True, blank=True)
-    debitos = models.FloatField(null=True, blank=True)
-    liquido = models.FloatField(null=True, blank=True)
     exc_soma = models.FloatField(null=True, blank=True)
     margem = models.FloatField(null=True, blank=True)
     base_calc = models.FloatField(null=True, blank=True)
@@ -40,11 +37,14 @@ class MatriculaDebitos(models.Model):
     bruta_70 = models.FloatField(null=True, blank=True)
     utilz_70 = models.FloatField(null=True, blank=True)
     saldo_70 = models.FloatField(null=True, blank=True)
+    creditos = models.FloatField(null=True, blank=True)
+    debitos = models.FloatField(null=True, blank=True)
+    liquido = models.FloatField(null=True, blank=True)
     arq_upag = models.CharField(max_length=50, null=True, blank=True)
     exc_qtd = models.IntegerField(null=True, blank=True)
     
     class Meta:
-        unique_together = ('cliente', 'matricula', 'debito')
+        unique_together = ('cliente', 'matricula', 'rubrica')  # Ajustado para rubrica
     
     def __str__(self):
-        return f"{self.cliente} - {self.matricula} - {self.debito}"
+        return f"{self.cliente} - {self.matricula} - {self.rubrica}"

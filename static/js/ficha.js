@@ -8,24 +8,36 @@ document.addEventListener('DOMContentLoaded', function () {
             var tabGroup = tab.parentNode;
             var tabGroupContents = tabGroup.nextElementSibling.querySelectorAll('.content');
 
+            // Remover classe 'active' de todas as abas e conteúdos
             tabGroup.querySelectorAll('.tab').forEach(function (tab) {
                 tab.classList.remove('active');
             });
-            tab.classList.add('active');
-
             tabGroupContents.forEach(function (content) {
                 content.classList.remove('active');
             });
+
+            // Adicionar classe 'active' à aba e ao conteúdo correspondente
+            tab.classList.add('active');
             document.getElementById(tab.dataset.tab).classList.add('active');
 
+            // Atualizar a posição do slider
             tabSliders.forEach(function (slider) {
                 var tabIndex = Array.from(tabGroup.children).indexOf(tab);
-                slider.style.left = (tabIndex * 50) + '%';
+                slider.style.left = (tabIndex * 100) + '%';
             });
         });
     });
+
+    // Posição inicial do slider
+    const initialActiveTab = document.querySelector('.tabs .tab.active');
+    if (initialActiveTab) {
+        const tabSlider = document.querySelector('.tab-slider');
+        tabSlider.style.left = `${initialActiveTab.offsetLeft}px`;
+        tabSlider.style.width = `${initialActiveTab.offsetWidth}px`;
+    }
 });
 
+// Funções adicionais
 function calcularMargem(margemId, coeficienteId, valorLiberadoId) {
     var margem = parseFloat(document.getElementById(margemId).value);
     var coeficiente = parseFloat(document.getElementById(coeficienteId).value);

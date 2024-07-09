@@ -1,16 +1,5 @@
-/* Definição de variáveis */
-:root {
-    --cor-primaria: #4A90E2; /* Azul Primário */
-    --cor-secundaria: #50E3C2; /* Verde Secundário */
-    --cor-texto: #333333; /* Cor do Texto */
-    --cor-fundo-card: #FFFFFF; /* Fundo do Card */
-    --cor-botao: #4A90E2; /* Fundo do Botão */
-    --cor-botao-hover: #50E3C2; /* Fundo do Botão Hover */
-    --cor-fundo-modal: rgba(0, 0, 0, 0.5); /* Fundo do Modal */
-    --cor-fundo-modal-conteudo: #FFFFFF; /* Fundo do Conteúdo do Modal */
-    --cor-borda-modal-conteudo: #CCCCCC; /* Borda do Conteúdo do Modal */
-    --cor-table-head: #f8f9fa; /* Fundo da Cabeça da Tabela */
-}
+/* Importando variáveis de cores */
+@import url('colors.css');
 
 /* Estilos Gerais */
 .card {

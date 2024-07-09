@@ -1,0 +1,22 @@
+/* Estilos CSS para a barra de progresso */
+#progress-container {
+    display: none; /* Inicia oculto */
+    width: 100vw; /* Cobrir toda a largura da viewport */
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    z-index: 1000;
+}
+
+#progress-bar {
+    width: 0.1%; /* Inicia com 0.1% */
+    height: 30px;
+    background-color: green;
+    text-align: center;
+    color: white;
+    line-height: 30px;
+}

@@ -1,3 +1,4 @@
+/* Importando variáveis de cores */
 @import url('colors.css');
 
 main {
@@ -26,15 +27,18 @@ main {
     margin-bottom: 20px;
     position: relative;
 }
+
 .tab {
     padding: 10px 20px;
     cursor: pointer;
     position: relative;
 }
+
 .tab.active {
     font-weight: bold;
     color: var(--cor-primaria);
 }
+
 .tab-slider {
     position: absolute;
     bottom: -1px;
@@ -44,36 +48,124 @@ main {
     background-color: var(--cor-primaria);
     transition: left 0.3s ease;
 }
+
 .content {
     display: none;
 }
+
 .content.active {
     display: block;
 }
+
 .info-cliente {
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
 }
+.info-cliente .container-info {
+    margin: 10px;
+    box-shadow: 0 0 10px var(--cor-box-shadow);
+    width: 80%;
+    height: 30vh;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+.info-cliente .container-info .box-info {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    flex-direction: row;
+}
+
+
 .cards {
     display: flex;
-    gap: 10px;
     margin-bottom: 20px;
+    justify-content: space-between;
 }
-.card {
+
+.cards .card {
     border: 1px solid var(--cor-cinza-claro);
     padding: 10px;
     flex: 1;
     background-color: var(--cor-fundo-card);
+    width: 10vw;
+    height: 19vh;
+    margin: 0 45px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
 }
+.cards .card h3 {
+    height: 25%;
+    font-size: 18pt;
+}
+.cards .card span {
+    height: 75%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: auto 0;
+}
+.cards .card span p {
+    font-size: 24pt;
+}
+
 .calculator {
     margin-top: 20px;
 }
+
 .calculator label {
     display: inline-block;
     width: 150px;
 }
+
 .calculator input {
     margin-bottom: 10px;
     padding: 5px;
     border: 1px solid var(--cor-cinza-claro);
     border-radius: var(--border-radius-tamanho);
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--cor-cinza-claro);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab.active {
+    font-weight: bold;
+    color: var(--cor-primaria);
+}
+
+.tab-slider {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    background-color: var(--cor-primaria);
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
