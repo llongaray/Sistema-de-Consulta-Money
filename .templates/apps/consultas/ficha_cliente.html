@@ -56,75 +56,84 @@
             </div>
         </div>
         
-        <div class="tabs">
-            <div class="tab active" data-tab="debitos">Débitos</div>
-            <div class="tab" data-tab="calc-margem">Calculadora de Margem</div>
-            <div class="tab" data-tab="calc-bcb">Calculadora do Banco Central</div>
-            <div class="tab-slider"></div>
-        </div>
-        
-        <div class="content active" id="debitos">
-            <h2>Débitos</h2>
-            <table>
-                <tr>
-                    <th>BANCO</th>
-                    <th>PMT</th>
-                    <th>PRAZO</th>
-                    <th>TIPO CONTRATO</th>
-                    <th>Créditos</th>
-                    <th>Débitos</th>
-                    <th>Líquido</th>
-                    <th>Margem</th>
-                </tr>
-                {% for contrato in matriculas %}
-                    {% if contrato.matricula == matricula.matricula %}
+        <div class="tabs-content-slider">
+            <div class="tab" data-tab="debitos">
+                <h2>Débitos</h2>
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ contrato.banco }}</td>
-                            <td>{{ contrato.pmt }}</td>
-                            <td>{{ contrato.prazo }}</td>
-                            <td>{{ contrato.tipo_contrato }}</td>
-                            <td>{{ contrato.creditos }}</td>
-                            <td>{{ contrato.debito }}</td>
-                            <td>{{ contrato.liquido }}</td>
-                            <td>{{ contrato.margem }}</td>
+                            <th>BANCO</th>
+                            <th>PMT</th>
+                            <th>PRAZO</th>
+                            <th>TIPO CONTRATO</th>
+                            <th>Créditos</th>
+                            <th>Débitos</th>
+                            <th>Líquido</th>
+                            <th>Margem</th>
                         </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        </div>
-        
-        <div class="content" id="calc-margem">
-            <h2>Calculadora de Margem</h2>
-            <div class="calculator">
-                <label for="margem">Margem 35%:</label>
-                <input type="text" id="margem"><br>
-                <label for="coeficiente">Coeficiente do dia:</label>
-                <input type="text" id="coeficiente"><br>
-                <label for="valor-liberado">Valor liberado:</label>
-                <input type="text" id="valor-liberado" disabled><br>
-                <button onclick="calcularMargem('margem', 'coeficiente', 'valor-liberado')">Calcular</button>
+                    </thead>
+                    <tbody>
+                        {% for contrato in matriculas %}
+                            {% if contrato.matricula == matricula.matricula %}
+                                <tr>
+                                    <td>{{ contrato.banco }}</td>
+                                    <td>{{ contrato.pmt }}</td>
+                                    <td>{{ contrato.prazo }}</td>
+                                    <td>{{ contrato.tipo_contrato }}</td>
+                                    <td>{{ contrato.creditos }}</td>
+                                    <td>{{ contrato.debito }}</td>
+                                    <td>{{ contrato.liquido }}</td>
+                                    <td>{{ contrato.margem }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
-        
-        <div class="content" id="calc-bcb">
-            <h2>Calculadora do Banco Central</h2>
-            <div class="calculator">
-                <label for="meses">Nº de Meses:</label>
-                <input type="text" id="meses"><br>
-                <label for="taxa-juros">Taxa de Juros Mensal (%):</label>
-                <input type="text" id="taxa-juros"><br>
-                <label for="prestacao">Valor da Prestação:</label>
-                <input type="text" id="prestacao"><br>
-                <label for="financiado">Valor do Financiado:</label>
-                <input type="text" id="financiado"><br>
-                <button onclick="calcularBancoCentral('meses', 'taxa-juros', 'prestacao', 'financiado')">Calcular</button>
-                <button onclick="limparBancoCentral('meses', 'taxa-juros', 'prestacao', 'financiado')">Limpar</button>
-                <button onclick="imprimirBancoCentral()">Imprimir</button>
+            
+            <div class="tab" data-tab="calc-margem">
+                <h2>Calculadora de Margem</h2>
+                <div class="calculator">
+                    <label for="margem">Margem 35%:</label>
+                    <input type="text" id="margem"><br>
+                    <label for="coeficiente">Coeficiente do dia:</label>
+                    <input type="text" id="coeficiente"><br>
+                    <label for="valor-liberado">Valor liberado:</label>
+                    <input type="text" id="valor-liberado" disabled><br>
+                    <button onclick="calcularMargem('margem', 'coeficiente', 'valor-liberado')">Calcular</button>
+                </div>
+            </div>
+            
+            <div class="tab" data-tab="calc-bcb">
+                <h2>Calculadora do Banco Central</h2>
+                <div class="calculator">
+                    <label for="meses">Nº de Meses:</label>
+                    <input type="text" id="meses"><br>
+                    <label for="taxa-juros">Taxa de Juros Mensal (%):</label>
+                    <input type="text" id="taxa-juros"><br>
+                    <label for="prestacao">Valor da Prestação:</label>
+                    <input type="text" id="prestacao"><br>
+                    <label for="financiado">Valor do Financiado:</label>
+                    <input type="text" id="financiado"><br>
+                    <button onclick="calcularBancoCentral('meses', 'taxa-juros', 'prestacao', 'financiado')">Calcular</button>
+                    <button onclick="limparBancoCentral('meses', 'taxa-juros', 'prestacao', 'financiado')">Limpar</button>
+                    <button onclick="imprimirBancoCentral()">Imprimir</button>
+                </div>
             </div>
         </div>
     </div>
     {% endfor %}
 </section>
+{% endblock %}
+{% block addjs_extra %}
+<!-- Slick Carousel CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
+<!-- Slick Carousel JS -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script src="{% static 'sliders.js' %}"></script>
 <script src="{% static 'ficha.js' %}"></script>
+
 {% endblock %}

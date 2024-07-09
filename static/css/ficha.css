@@ -46,8 +46,27 @@ main {
     width: 50%;
     height: 2px;
     background-color: var(--cor-primaria);
-    transition: left 0.3s ease;
+    transition: left 0.3s ease, width 0.3s ease;
 }
+.tabs-content-slider {
+    display: none;
+}
+.tabs-content-slider.slick-initialized {
+    display: block;
+}
+
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+
+.slick-prev, .slick-next {
+    color: #000;
+    font-size: 20px;
+}
+
 
 .content {
     display: none;
@@ -63,6 +82,7 @@ main {
     justify-content: center;
     margin-bottom: 30px;
 }
+
 .info-cliente .container-info {
     margin: 10px;
     box-shadow: 0 0 10px var(--cor-box-shadow);
@@ -75,13 +95,13 @@ main {
     text-align: center;
     flex-direction: column;
 }
+
 .info-cliente .container-info .box-info {
     display: flex;
     justify-content: space-between;
     text-align: left;
     flex-direction: row;
 }
-
 
 .cards {
     display: flex;
@@ -102,10 +122,12 @@ main {
     flex-direction: column;
     justify-content: center;
 }
+
 .cards .card h3 {
     height: 25%;
     font-size: 18pt;
 }
+
 .cards .card span {
     height: 75%;
     display: flex;
@@ -114,6 +136,7 @@ main {
     align-items: center;
     margin: auto 0;
 }
+
 .cards .card span p {
     font-size: 24pt;
 }
@@ -134,38 +157,28 @@ main {
     border-radius: var(--border-radius-tamanho);
 }
 
-.tabs {
-    display: flex;
-    border-bottom: 1px solid var(--cor-cinza-claro);
-    margin-bottom: 20px;
-    position: relative;
+/* Estilo para a tabela de contratos */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    position: relative;
+table th, table td {
+    border: 1px solid var(--cor-cinza-claro);
+    padding: 10px;
+    text-align: left;
 }
 
-.tab.active {
-    font-weight: bold;
-    color: var(--cor-primaria);
-}
-
-.tab-slider {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 50%;
-    height: 2px;
+table th {
     background-color: var(--cor-primaria);
-    transition: left 0.3s ease, width 0.3s ease;
+    color: white;
 }
 
-.tab-content {
-    display: none;
+table tr:nth-child(even) {
+    background-color: var(--cor-fundo-tabela);
 }
 
-.tab-content.active {
-    display: block;
+table tr:hover {
+    background-color: var(--cor-hover-tabela);
 }
