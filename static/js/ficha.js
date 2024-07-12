@@ -1,37 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Inicializar o Slick Carousel para os tabs principais
-    $('.tabs').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        infinite: false,
-        dots: false,
-        arrows: true,
-    });
-
-    // Inicializar o Slick Carousel para os tabs de débitos e calculadoras
-    $('.tabs-content-slider').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        infinite: false,
-        dots: false,
-        arrows: true,
-    });
-
-    // Manipular evento de clique nos tabs para ativar o conteúdo correspondente
-    $('.tabs .tab').on('click', function (event, slick, currentSlide) {
-        var tabId = $(this).data('tab');
-        
-        // Remover classe 'active' de todos os conteúdos
-        $('.content').removeClass('active');
-        
-        // Adicionar classe 'active' ao conteúdo correspondente
-        $('#' + tabId).addClass('active');
-    });
-
-    // Inicializar o primeiro tab como ativo
-    $('.tabs .tab').first().trigger('click');
-});
-
 // Funções adicionais (sem alterações)
 function calcularMargem(margemId, coeficienteId, valorLiberadoId) {
     var margem = parseFloat(document.getElementById(margemId).value);

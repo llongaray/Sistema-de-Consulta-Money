@@ -7,6 +7,7 @@ import logging
 from django.db import transaction
 import time
 from datetime import timedelta
+from collections import defaultdict
 from decimal import Decimal, InvalidOperation
 
 # Configurando o logger
@@ -29,10 +30,13 @@ def ficha_cliente(request, cpf):
     cliente = get_object_or_404(Cliente, cpf=cpf)
     matriculas_db = MatriculaDebitos.objects.filter(cliente=cliente)
     
-    matriculas = []  # Lista vazia para armazenar as matrículas
+    margens = []  # Lista para armazenar as margens
+    first_margem = 0  # Variável para controlar a primeira inserção
+    
+    matriculas = []  # Lista para armazenar as matrículas
     
     for matricula in matriculas_db:
-        debitos = MatriculaDebitos.objects.filter(matricula=matricula)  # Supondo que você tenha um modelo Debitos relacionado
+        print("for matriculas")
         matriculas.append({
             'matricula': matricula.matricula,
             'rubrica': matricula.rubrica,
@@ -43,26 +47,45 @@ def ficha_cliente(request, cpf):
             'tipo_contrato': matricula.tipo_contrato,
             'contrato': matricula.contrato,
             'creditos': matricula.creditos,
-            'debitos': debitos,  # Adiciona a lista de débitos ao dicionário de matrícula
             'liquido': matricula.liquido,
             'exc_soma': matricula.exc_soma,
             'margem': matricula.margem,
             'base_calc': matricula.base_calc,
             'bruta_5': matricula.bruta_5,
             'utilz_5': matricula.utilz_5,
-            'saldo_5': matricula.saldo_5,
             'beneficio_bruta_5': matricula.beneficio_bruta_5,
             'beneficio_utilizado_5': matricula.beneficio_utilizado_5,
-            'beneficio_saldo_5': matricula.beneficio_saldo_5,
             'bruta_35': matricula.bruta_35,
             'utilz_35': matricula.utilz_35,
-            'saldo_35': matricula.saldo_35,
             'bruta_70': matricula.bruta_70,
             'utilz_70': matricula.utilz_70,
-            'saldo_70': matricula.saldo_70,
+            'saldo_35': matricula.saldo_35,
+            'saldo_5': matricula.saldo_5,
+            'beneficio_saldo_5': matricula.beneficio_saldo_5,
             'arq_upag': matricula.arq_upag,
             'exc_qtd': matricula.exc_qtd,
         })
+        
+        # Verifica duplicidade apenas após a primeira inserção
+        if first_margem > 0:
+            print('first é: ' + str(first_margem))
+            if matricula.saldo_35 not in margens:
+                margens.append({
+                    'saldo_35': matricula.saldo_35,
+                    'saldo_5': matricula.saldo_5,
+                    'beneficio_saldo_5': matricula.beneficio_saldo_5,
+                })
+        else:
+            print('first é 0')
+            margens.append({
+                'saldo_35': matricula.saldo_35,
+                'saldo_5': matricula.saldo_5,
+                'beneficio_saldo_5': matricula.beneficio_saldo_5,
+            })
+            print("saldo_35: " + str(matricula.saldo_35))
+            print("saldo_5: " + str(matricula.saldo_5))
+            print("beneficio_saldo_5: " + str(matricula.beneficio_saldo_5))
+            first_margem += 1
     
     context = {
         'cliente': {
@@ -74,11 +97,11 @@ def ficha_cliente(request, cpf):
             'situacao_funcional': cliente.situacao_funcional,
             'rjur': cliente.rjur,
         },
+        'margens': margens,  # Passa a lista de margens ao contexto
         'matriculas': matriculas,  # Adiciona a lista de matrículas ao contexto
     }
-    
+    print("fim ficha")
     return render(request, 'consultas/ficha_cliente.html', context)
-
 
 def normalize_cpf(cpf):
     # Remove todos os caracteres não numéricos

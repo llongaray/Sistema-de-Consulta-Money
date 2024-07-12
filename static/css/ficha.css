@@ -1,184 +1,223 @@
 /* Importando variáveis de cores */
 @import url('colors.css');
-
+/* ESTILOS GERAIS */
 main {
-    font-family: var(--fonte-principal);
+    font-family: Arial, sans-serif;
     padding: 0;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 55px 0;
+    margin: 50px 0;
+    background-color: #f2f2f2;
 }
 
 .container-ficha {
-    width: 75vw;
-    margin: 20px 10px;
-    padding: 10px 25px;
-    box-shadow: 0 0 10px var(--cor-box-shadow);
-    background-color: var(--cor-fundo-card);
-    border-radius: var(--border-radius-tamanho);
-    overflow-x: hidden;
-}
-
-.tabs {
     display: flex;
-    border-bottom: 1px solid var(--cor-cinza-claro);
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    position: relative;
-}
-
-.tab.active {
-    font-weight: bold;
-    color: var(--cor-primaria);
-}
-
-.tab-slider {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 50%;
-    height: 2px;
-    background-color: var(--cor-primaria);
-    transition: left 0.3s ease, width 0.3s ease;
-}
-.tabs-content-slider {
-    display: none;
-}
-.tabs-content-slider.slick-initialized {
-    display: block;
-}
-
-.tab-content {
-    display: none;
-}
-.tab-content.active {
-    display: block;
-}
-
-.slick-prev, .slick-next {
-    color: #000;
-    font-size: 20px;
-}
-
-
-.content {
-    display: none;
-}
-
-.content.active {
-    display: block;
-}
-
-.info-cliente {
-    display: flex;
-    align-items: center;
+    flex-direction: column;
+    padding: 20px;
     justify-content: center;
-    margin-bottom: 30px;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.info-cliente .container-info {
+/* Estilo para o título da ficha */
+.container-ficha h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Estilos para as informações do cliente */
+.container-ficha .box {
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container-ficha .box p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #666;
+}
+
+.container-ficha .box .box-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.container-ficha .box .box-info p {
+    width: calc(50% - 10px);
+}
+
+/* Estilos para os cards de margem */
+.container-ficha .box-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.container-ficha .box-cards .card {
+    width: calc(33.33% - 20px);
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
     margin: 10px;
-    box-shadow: 0 0 10px var(--cor-box-shadow);
-    width: 80%;
-    height: 30vh;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.info-cliente .container-info .box-info {
-    display: flex;
-    justify-content: space-between;
-    text-align: left;
-    flex-direction: row;
-}
-
-.cards {
-    display: flex;
-    margin-bottom: 20px;
-    justify-content: space-between;
-}
-
-.cards .card {
-    border: 1px solid var(--cor-cinza-claro);
-    padding: 10px;
-    flex: 1;
-    background-color: var(--cor-fundo-card);
-    width: 10vw;
-    height: 19vh;
-    margin: 0 45px;
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.cards .card h3 {
-    height: 25%;
-    font-size: 18pt;
-}
-
-.cards .card span {
-    height: 75%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    margin: auto 0;
-}
-
-.cards .card span p {
-    font-size: 24pt;
-}
-
-.calculator {
-    margin-top: 20px;
-}
-
-.calculator label {
-    display: inline-block;
-    width: 150px;
-}
-
-.calculator input {
+.container-ficha .box-cards .card h3 {
+    color: #333;
+    font-size: 18px;
     margin-bottom: 10px;
-    padding: 5px;
-    border: 1px solid var(--cor-cinza-claro);
-    border-radius: var(--border-radius-tamanho);
 }
 
-/* Estilo para a tabela de contratos */
-table {
+.container-ficha .box-cards .card p {
+    color: #666;
+    font-size: 16px;
+}
+
+/* Estilos para a tabela de contratos */
+.container-ficha .box table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-table th, table td {
-    border: 1px solid var(--cor-cinza-claro);
-    padding: 10px;
-    text-align: left;
+.container-ficha .box table th,
+.container-ficha .box table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
 }
 
-table th {
-    background-color: var(--cor-primaria);
-    color: white;
+.container-ficha .box table th {
+    background-color: #f2f2f2;
+    color: #333;
+    text-transform: uppercase;
 }
 
-table tr:nth-child(even) {
-    background-color: var(--cor-fundo-tabela);
+.container-ficha .box table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-table tr:hover {
-    background-color: var(--cor-hover-tabela);
+/* Estilos para a barra de navegação */
+.tab-navigation {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.tab-navigation .tab-label {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 45px;
+}
+
+.tab-navigation .tab-label:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para os modais calculadoras */
+.box-modal {
+    display: none;
+    flex-direction: column;
+    width: max-content;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.box-modal.active {
+    display: flex;
+}
+
+.container-calc {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container-calc.active {
+    display: flex;
+}
+
+.box-modal .calculator {
+    margin-top: 10px;
+}
+
+.box-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.box-modal label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+.box-modal input {
+    padding: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.box-modal button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+}
+
+.box-modal button:hover {
+    background-color: #0056b3;
+}
+
+.close-modal {
+    cursor: pointer;
+    color: #ffffff;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.close-modal:hover {
+    color: #960000;
 }

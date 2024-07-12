@@ -1,4 +1,6 @@
 /* base.css */
+/* Importando variáveis de cores */
+@import url('colors.css');
 
 /* Reset básico */
 * {
@@ -6,9 +8,6 @@
     padding: 0;
     box-sizing: border-box; /* Garante que o padding não aumente o tamanho total do elemento */
 }
-
-/* Importando variáveis de cores */
-@import url('colors.css');
 
 /* Estilo padrão para o HTML */
 html {
@@ -20,9 +19,7 @@ html {
 
 /* Estilos para o corpo da página */
 body {
-    min-height: 100vh; /* Garante que o corpo da página ocupe pelo menos a altura da janela visível */
-    display: flex;
-    flex-direction: column;
+    min-height: 100dvh;
 }
 
 /* Estilos para os links */

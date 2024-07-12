@@ -46,7 +46,7 @@
     --cor-table-head: var(--cor-branco);
 
     /* cor box-shadow */
-    --cor-box-shadow: var(--cor-preto);
+    --cor-box-shadow: 0 0 10px var(--cor-preto);
 
     /* fontes */
     --fonte-arial: Arial, sans-serif;

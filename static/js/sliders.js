@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     // Script para abrir os modais ao clicar nos botões dentro dos cards
-    var cards = document.querySelectorAll('.button-modal');
+    var cards = document.querySelectorAll('.gallery-cell .button-modal'); // Selecionando corretamente os botões
     var modais = document.querySelectorAll('.modal');
     var closeBtns = document.querySelectorAll('.close-btn');
 

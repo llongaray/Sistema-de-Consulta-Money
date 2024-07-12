@@ -4,137 +4,166 @@
 <title>Money System - Gerenciamento</title>
 {% endblock %}
 {% block addcss_extra %}
-<link rel="stylesheet" href="{% static 'cards.css' %}">
+<link rel="stylesheet" href="{% static 'gerenciamento.css' %}">
 {% endblock %}
 
 {% block content %}
 <section id="bloco-consulta">
-    <div class="container-slides">
-        <h2>Gerenciamento do Sistema de Consulta ao Cliente</h2>
+<!-- LABELS -->
+<section class="container-main">
+    <div class="container">
+        <h2>Recursos Humanos</h2>
         <section class="customer-logos slider">
             <div class="slide">
-                <div class="gallery-cell card" data-modal="modal-1">
-                    <i class="fas fa-database"></i>
-                    <h3>Base Bruta</h3>
-                    <p>Importe arquivo CSV</p>
-                    <button class="button-modal">Abrir Modal</button>
-                </div>
-            </div>
-            <div class="slide">
-                <div class="gallery-cell card" data-modal="modal-2">
+                <div class="gallery-cell card button-cadastro" data-modal="modal-cadastro">
                     <i class="fas fa-user"></i>
-                    <h3>Base Campanha SIAPE</h3>
-                    <p>Importe arquivo CSV</p>
+                    <p>Base </p>
                     <button class="button-modal">Abrir Modal</button>
                 </div>
             </div>
             <div class="slide">
-                <div class="gallery-cell card" data-modal="modal-3">
-                    <i class="fas fa-file-csv"></i>
-                    <h3>Base Campanha INSS POA</h3>
-                    <p>Importe arquivo CSV</p>
+                <div class="gallery-cell card button-documentos" data-modal="modal-documentos">
+                    <i class="fas fa-file-alt"></i>
+                    <p>Registro de documentos do funcionário (Já registrado)</p>
                     <button class="button-modal">Abrir Modal</button>
                 </div>
             </div>
             <div class="slide">
-                <div class="gallery-cell card" data-modal="modal-4">
-                    <i class="fas fa-file-csv"></i>
-                    <h3>Base Campanha INSS SLE</h3>
-                    <p>Importe arquivo CSV</p>
+                <div class="gallery-cell card button-atestado" data-modal="modal-atestado">
+                    <i class="fas fa-notes-medical"></i>
+                    <p>Registro de documento de atestado</p>
                     <button class="button-modal">Abrir Modal</button>
                 </div>
             </div>
             <div class="slide">
-                <div class="gallery-cell card" data-modal="modal-5">
-                    <i class="fas fa-file-csv"></i>
-                    <h3>Base Campanha INSS SM</h3>
-                    <p>Importe arquivo CSV</p>
+                <div class="gallery-cell card button-advertencia" data-modal="modal-advertencia">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Registro de documento de Advertência</p>
+                    <button class="button-modal">Abrir Modal</button>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="gallery-cell card button-demissao" data-modal="modal-demissao">
+                    <i class="fas fa-user-slash"></i>
+                    <p>Registro de documentos de demissão</p>
                     <button class="button-modal">Abrir Modal</button>
                 </div>
             </div>
         </section>
     </div>
-    <div class="container-modals">
-        <!-- Modais -->
-        <div id="modal-1" class="modal">
-            <div class="modal-content">
-                <div class="container-close-btn"><span class="close-btn">&times;</span></div>
-                <h2>Base Bruta</h2>
-                <form id="form-upload-csv-1" action="{% url 'consulta:gerenciamento' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="file" name="csv_file" accept=".csv" required>
-                    <button type="submit">Enviar</button>
-                </form>
-            </div>
-        </div>
-        <div id="modal-2" class="modal">
-            <div class="modal-content">
-                <div class="container-close-btn"><span class="close-btn">&times;</span></div>
-                <h2>Base Campanha SIAPE</h2>
-                <p class="alert-manutecao">Sistema em desenvolvimento</p>
-            </div>
-        </div>
-        <div id="modal-3" class="modal">
-            <div class="modal-content">
-                <div class="container-close-btn"><span class="close-btn">&times;</span></div>
-                <h2>Base Campanha INSS POA</h2>
-                <p class="alert-manutecao">Sistema em desenvolvimento</p>
-            </div>
-        </div>
-        <div id="modal-4" class="modal">
-            <div class="modal-content">
-                <div class="container-close-btn"><span class="close-btn">&times;</span></div>
-                <h2>Base Campanha INSS SLE</h2>
-                <p class="alert-manutecao">Sistema em desenvolvimento</p>
-            </div>
-        </div>
-        <div id="modal-5" class="modal">
-            <div class="modal-content">
-                <div class="container-close-btn"><span class="close-btn">&times;</span></div>
-                <h2>Base Campanha INSS SM</h2>
-                <p class="alert-manutecao">Sistema em desenvolvimento</p>
-            </div>
-        </div>
+</section>
+
+
+
+<!-- Modal Cadastro de Funcionário -->
+<div id="modal-cadastro" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Cadastro de Dados Básicos do Funcionário</h2>
+        
     </div>
+</div>
+
+
+<!-- Modal Registro de Documentos -->
+<div id="modal-documentos" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Registro de Documentos do Funcionário</h2>
+        <p>Conteúdo do modal para registro de documentos.</p>
+    </div>
+</div>
+
+<!-- Modal Registro de Atestado -->
+<div id="modal-atestado" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Registro de Documento de Atestado</h2>
+        <p>Conteúdo do modal para registro de atestado.</p>
+    </div>
+</div>
+
+<!-- Modal Registro de Advertência -->
+<div id="modal-advertencia" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Registro de Documento de Advertência</h2>
+        <p>Conteúdo do modal para registro de advertência.</p>
+    </div>
+</div>
+
+<!-- Modal Registro de Demissão -->
+<div id="modal-demissao" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Registro de Documentos de Demissão</h2>
+        <p>Conteúdo do modal para registro de demissão.</p>
+    </div>
+</div>
 </section>
 {% endblock %}
 
 {% block addjs_extra %}
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
-<script src="{% static 'sliders.js' %}"></script>
+
+<script>
+   $(document).ready(function() {
+        // Configuração do Slick Carousel
+        $('.customer-logos.slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: false,
+            autoplaySpeed: 1500,
+            arrows: false,
+            dots: false,
+            pauseOnHover: false,
+            responsive: [{
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2
+                }
+            }, {
+                breakpoint: 520,
+                settings: {
+                    slidesToShow: 1
+                }
+            }]
+        });
+
+        // Script para abrir os modais ao clicar nos botões dentro dos cards
+        var cards = document.querySelectorAll('.button-modal');
+        var modais = document.querySelectorAll('.modal');
+        var closeBtns = document.querySelectorAll('.close-btn');
+
+        cards.forEach(function(card, index) {
+            card.addEventListener('click', function() {
+                var modalId = card.parentElement.getAttribute('data-modal');
+                var modal = document.getElementById(modalId);
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                modais.forEach(function(modal) {
+                    modal.style.display = 'none';
+                });
+            });
+        });
+
+        window.addEventListener('click', function(e) {
+            modais.forEach(function(modal) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function() {
-        // Envio do formulário de cadastro via AJAX
-        var formCadastro = document.getElementById('form-cadastro');
-        if (formCadastro) {
-            formCadastro.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                var formData = new FormData(formCadastro);
-                var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-                $.ajax({
-                    url: formCadastro.action,
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrfToken
-                    },
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $('.modal').hide();
-                        location.reload(); // Recarrega a página para atualizar a lista de funcionários
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Ocorreu um erro ao cadastrar o funcionário. Por favor, tente novamente.');
-                    }
-                });
-            });
-        }
-
         // Envio do formulário de upload de CSV via AJAX
         var formUploadCsv = document.querySelectorAll('form[id^="form-upload-csv"]');
         formUploadCsv.forEach(function(form) {
