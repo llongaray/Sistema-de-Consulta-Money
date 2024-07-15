@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Cadastro</title>
+    <link rel="stylesheet" href="{% static '/css/usuarios.cad.css'%}">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro</h1>
+        <p>Insira as informações correspondentes.</p>
+        <input type="text" placeholder="Nome de usuário" required>
+        <input type="password" placeholder="Senha" required>
+        <input type="password" placeholder="Confirme a sua senha" required>
+        <button type="submit">Criar cadastro</button>
+    </div>
+</body>
+</html>
