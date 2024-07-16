@@ -9,6 +9,8 @@ import time
 from datetime import timedelta
 from collections import defaultdict
 from decimal import Decimal, InvalidOperation
+from django.contrib.auth.decorators import login_required
+
 
 # Configurando o logger
 logger = logging.getLogger(__name__)
@@ -117,9 +119,11 @@ def parse_float(value, default="0.00"):
         return "{:.2f}".format(float(value.replace('.', '').replace(',', '.'))) if value.strip() else default
     except ValueError:
         return default
-
+    
 @require_http_methods(["GET", "POST"])
 def gerenciamento(request):
+    if not request.user.is_authenticated:
+        return redirect('usuarios:login')
     print("Gerenciamento.......")
 
     if request.method == 'POST' and request.FILES.get('csv_file'):

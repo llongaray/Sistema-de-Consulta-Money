@@ -9,11 +9,16 @@
         <ul>
             <li><a href="{% url 'consulta:gerenciamento' %}">Admin</a></li>
             <li><a href="{% url 'consulta:consulta_cliente' %}">SIAPE</a></li>
-            <li><a href="#">INSS</a></li>
-            <li><a href="#">LOJAs</a></li>
         </ul>
     </div>
     <div id="login-logout">
-        <p><a href="#">Entrar</a> ou <a href="#">Cadastrar</a></p>
+        {% if user.is_authenticated %}
+            <p>
+                <span>{{ user.get_username }}</span> <!-- Mostra o nome de usuário -->
+                <a href="{% url 'usuarios:logout' %}"><i class="fas fa-sign-out-alt"></i></a> <!-- Link para logout com ícone -->
+            </p>
+        {% else %}
+            <p><a href="#">Entrar</a> ou <a href="#">Cadastrar</a></p>
+        {% endif %}
     </div>
 </nav>

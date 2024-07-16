@@ -18,9 +18,6 @@ DEBUG = True
 # Hosts permitidos durante o desenvolvimento
 ALLOWED_HOSTS = ['127.0.0.1', '192.168.18.236', '192.168.18.223', '192.168.18.171']
 
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -30,6 +27,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.consultas.apps.ConsultasConfig',
     'apps.vendas.siape.apps.SiapeConfig',
+    'apps.usuarios.apps.UsuariosConfig'
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # Outros backends de autenticação, se houver
 ]
 
 MIDDLEWARE = [
@@ -37,10 +40,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Middleware de autenticação
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'setup.urls'
 
