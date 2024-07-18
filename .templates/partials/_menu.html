@@ -1,0 +1,24 @@
+{% load static %}
+
+<!-- MENU SUPERIOR GERAL -->
+<nav id="menu-navbar">
+    <div id="logo">
+        <a href="{% url 'usuarios:welcome' %}"><img src="{% static 'logo-horizontal.png' %}" alt="Logo Money System"></a>
+    </div>
+    <div id="menu">
+        <ul>
+            <li><a href="{% url 'consulta:gerenciamento' %}">Admin</a></li>
+            <li><a href="{% url 'consulta:consulta_cliente' %}">SIAPE</a></li>
+        </ul>
+    </div>
+    <div id="login-logout">
+        {% if user.is_authenticated %}
+            <p>
+                <span>{{ user.get_username }}</span> <!-- Mostra o nome de usuário -->
+                <a href="{% url 'usuarios:logout' %}"><i class="fas fa-sign-out-alt"></i></a> <!-- Link para logout com ícone -->
+            </p>
+        {% else %}
+            <p><a href="#">Entrar</a> ou <a href="#">Cadastrar</a></p>
+        {% endif %}
+    </div>
+</nav>

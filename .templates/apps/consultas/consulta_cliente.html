@@ -1,0 +1,40 @@
+{% extends "bases/base.html" %}
+{% load static %}
+{% block title %}Consulta de Cliente{% endblock %}
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'consultas.css' %}">
+{% endblock %}
+{% block content %}
+<section id="bloco-consulta">
+    <h2>Consulta de Cliente</h2>
+    <form id="formConsulta">
+        <label for="cpfCliente">CPF do Cliente:</label>
+        <input type="text" id="cpfCliente" name="cpf_cliente">
+        <button type="submit">Consultar</button>
+    </form>
+
+    <div id="resultadoConsulta"></div>
+</section>
+
+<script>
+$(document).ready(function() {
+    $('#formConsulta').on('submit', function(event) {
+        event.preventDefault();
+        var cpfCliente = $('#cpfCliente').val();
+        $.ajax({
+            url: '{% url "consulta:consulta_cliente" %}?cpf_cliente=' + cpfCliente,
+            type: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'  // Adiciona o cabeçalho esperado
+            },
+            success: function(response) {
+                $('#resultadoConsulta').html(response);
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
