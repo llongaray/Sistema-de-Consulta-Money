@@ -5,36 +5,36 @@ Este é um sistema de gerenciamento de dados desenvolvido em Django, que permite
 ## 🚀 Instalação
 
 1. **Clone o repositório:**
-   <<bash
+   ```bash
    git clone https://github.com/username/repository.git
    cd repository
-   >>
+   ```
 
 2. **Crie um ambiente virtual e ative-o:**
-   <<bash
+   ```bash
    python -m venv env
    source env/bin/activate  # Para Windows use `env\Scripts\activate`
-   >>
+   ```
 
 3. **Instale as dependências:**
-   <<bash
+   ```bash
    pip install -r requirements.txt
-   >>
+   ```
 
 4. **Configure o banco de dados:**
-   <<bash
+   ```bash
    python manage.py migrate
-   >>
+   ```
 
 5. **Crie um superusuário para acessar o admin:**
-   <<bash
+   ```bash
    python manage.py createsuperuser
-   >>
+   ```
 
 6. **Inicie o servidor:**
-   <<bash
+   ```bash
    python manage.py runserver
-   >>
+   ```
 
 ## 📄 Uso
 
@@ -62,7 +62,7 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICEN
 
 ### Consulta de Cliente
 
-<<python
+```python
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from apps.consultas.models import Cliente
@@ -79,11 +79,11 @@ def consulta_cliente(request):
             return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
     else:
         return render(request, 'consultas/consulta_cliente.html')
->>
+```
 
 ### Importação de Dados CSV
 
-<<python
+```python
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -99,11 +99,11 @@ def gerenciamento(request):
         ]
         # Processamento do arquivo CSV
         # ...
->>
+```
 
 ### Funções de Usuário
 
-<<python
+```python
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from django.contrib import messages
@@ -174,7 +174,7 @@ def welcome(request):
         'total_debitos': total_debitos,
     }
     return render(request, 'usuarios/welcome.html', context)
->>
+```
 
 ---
 
