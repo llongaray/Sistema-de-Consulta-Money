@@ -4,8 +4,23 @@
 <title>Money System - Página Inicial</title>
 {% endblock %}
 {% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'usuarios/welcome.css' %}">
 {% endblock %}
 
 {% block content %}
-    <h2 class="welcome">Seja Bem-Vindo ao Sistema de Consultas da Money</h2>
+    <section class="container">
+        <div class="box title">
+            <h2 class="welcome">Seja Bem-Vindo ao Sistema de Consultas da Money</h2>
+        </div>
+        <div class="box dashboard">
+            <span class="box-info">
+                <h4>Total de Clientes: </h4><span>{{ total_clientes }}</span>
+            </span>
+            <span class="box-info">
+                <h4>Total de Débitos: </h4><span>{{ total_debitos }}</span>
+            </span>
+        </div>
+    </section>
+{% endblock %}
+{% block addjs_extra %}
 {% endblock %}

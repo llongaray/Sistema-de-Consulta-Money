@@ -3,9 +3,11 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .models import Cliente, MatriculaDebitos
 import csv
+from django.db.models import Q
 import logging
 from django.db import transaction
 import time
+from django.utils.timezone import now
 from datetime import timedelta
 from collections import defaultdict
 from decimal import Decimal, InvalidOperation
@@ -119,7 +121,7 @@ def parse_float(value, default="0.00"):
         return "{:.2f}".format(float(value.replace('.', '').replace(',', '.'))) if value.strip() else default
     except ValueError:
         return default
-    
+
 @require_http_methods(["GET", "POST"])
 def gerenciamento(request):
     if not request.user.is_authenticated:
@@ -137,7 +139,6 @@ def gerenciamento(request):
         ]
 
         try:
-
             # Contar o número total de linhas no CSV
             csv_reader = csv.DictReader(csv_file.read().decode('utf-8-sig').splitlines(), delimiter=';', quotechar='"')
             total_rows = sum(1 for row in csv_reader)
@@ -151,59 +152,56 @@ def gerenciamento(request):
                 return JsonResponse({'status': 'error', 'message': f'Colunas ausentes no CSV: {", ".join(missing_fields)}'}, status=400)
 
             processed_rows = 0
-            print("iniciando for......")
+            print("Iniciando importação do CSV...")
             for row in csv_reader:
                 processed_rows += 1
-                print('linha: ' + str(processed_rows))
+                cliente_add = False
+                debito_add = False
+
+                # Verificar se alguma coluna contém "#N/D"
+                if any(value == "#N/D" for value in row.values()):
+                    print(f"Linha {processed_rows} ignorada devido a '#N/D'")
+                    continue
+
                 # Verifica se o cliente já existe pelo CPF
                 cpf_normalizado = normalize_cpf(row['CPF'])
-                cliente, created = Cliente.objects.get_or_create(
-                    cpf=cpf_normalizado,
-                    defaults={
-                        'nome': row['NOME'],
-                        'uf': row['UF'],
-                        'upag': row['UPAG'],
-                        'matricula_instituidor': row.get('MATRICULA INSTITUIDOR', ''),
-                        'situacao_funcional': row['Sit Func'],
-                        'rjur': row['RJUR']
-                    }
-                )
+                try:
+                    cliente = Cliente.objects.get(cpf=cpf_normalizado)
+                    cliente_add = False
+                except Cliente.DoesNotExist:
+                    cliente = Cliente.objects.create(
+                        cpf=cpf_normalizado,
+                        nome=row['NOME'],
+                        uf=row['UF'],
+                        upag=row['UPAG'],
+                        matricula_instituidor=row.get('MATRICULA INSTITUIDOR', ''),
+                        situacao_funcional=row['Sit Func'],
+                        rjur=row['RJUR']
+                    )
+                    cliente_add = True
+
                 # Convertendo os campos para float, verificando se não estão vazios
                 pmt = parse_float(row['PMT'])
-                base_calc = parse_float(row['Base Calc'])
-                bruta_5 = parse_float(row['Bruta 5%'])
-                utilz_5 = parse_float(row['Utilz 5%'])
-                saldo_5 = parse_float(row['Saldo 5%'])
-                beneficio_bruta_5 = parse_float(row['Beneficio Bruta 5%'])
-                beneficio_utilizado_5 = parse_float(row['Beneficio Utilizado 5%'])
-                beneficio_saldo_5 = parse_float(row['Beneficio Saldo 5%'])
-                bruta_35 = parse_float(row['Bruta 35%'])
-                utilz_35 = parse_float(row['Utilz 35%'])
-                saldo_35 = parse_float(row['Saldo 35%'])
-                bruta_70 = parse_float(row['Bruta 70%'])
-                utilz_70 = parse_float(row['Utilz 70%'])
-                saldo_70 = parse_float(row['Saldo 70%'])
-                creditos = parse_float(row['Créditos'])
-                debitos = parse_float(row['Débitos'])
-                liquido = parse_float(row['Líquido'])
-                margem = parse_float(row['Margem'])
-                exc_soma = parse_float(row['EXC Soma'])
                 prazo = row['PRAZO'].strip()
                 if 'EXC QTD' in row:
                     exc_qtd = int(row['EXC QTD']) if row['EXC QTD'].strip() else 0
                 else:
                     exc_qtd = 0
 
-                # Verifica se já existe um débito com as mesmas informações de BANCO, PMT e PRAZO
-                existing_debito = MatriculaDebitos.objects.filter(
-                    cliente=cliente,
-                    banco=row['BANCO'],
-                    pmt=pmt,
-                    prazo=prazo
-                ).exists()
-                # print("debito filtrado")
-                if not existing_debito: 
-                    # Cria o débito para o cliente
+                # Filtra todos os débitos existentes para o cliente
+                all_debitos = MatriculaDebitos.objects.filter(cliente=cliente)
+
+                # Filtra os débitos pelo mesmo pmt que o do CSV
+                debitos_same_pmt = all_debitos.filter(pmt=pmt)
+
+                # Filtra os débitos pelo mesmo prazo que o do CSV
+                debitos_same_pmt_prazo = debitos_same_pmt.filter(prazo=prazo)
+
+                # Converte para um dicionário para facilitar a verificação
+                existing_debitos_dict = {debito.id: debito for debito in debitos_same_pmt_prazo}
+
+                # Verifica se existe algum débito com os mesmos critérios
+                if not existing_debitos_dict:
                     MatriculaDebitos.objects.create(
                         cliente=cliente,
                         matricula=row['MATRICULA'],
@@ -230,12 +228,15 @@ def gerenciamento(request):
                         creditos=parse_float(row['Créditos']),
                         debitos=parse_float(row['Débitos']),
                         liquido=parse_float(row['Líquido']),
-                        margem = parse_float(row['Margem']),
-                        exc_soma = parse_float(row['EXC Soma']),
+                        margem=parse_float(row['Margem']),
+                        exc_soma=parse_float(row['EXC Soma']),
                         arq_upag=row.get('ARQ. UPAG', ''),
                         exc_qtd=exc_qtd
                     )
-                    
+                    debito_add = True
+
+                print(f"Linha {processed_rows} de {total_rows} | Cliente adicionado: {'Sim' if cliente_add else 'Não'} | Débito adicionado: {'Sim' if debito_add else 'Não'}")
+
             print("Sucesso!")
             return JsonResponse({'status': 'success', 'message': 'Dados importados com sucesso!'}, status=200)
 

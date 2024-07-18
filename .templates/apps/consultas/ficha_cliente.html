@@ -94,12 +94,12 @@
     </div>
     
     <!-- Container para centralizar os modais -->
-    <div class="container-calc">
+    <div class="container-calc" onclick="fecharModalFora(event)">
         <!-- Modais Calculadoras -->
         <div id="calc-margem" class="box-modal">
             <span class="close-modal" onclick="fecharModal('calc-margem')"><i class="fas fa-times"></i></span> <!-- Ícone de Fechar -->
-            <h2>Calculadora de Margem</h2>
             <div class="calculator">
+                <h2>Calculadora de Margem</h2>
                 <label for="margem">Margem 35%:</label>
                 <input type="text" id="margem"><br>
                 <label for="coeficiente">Coeficiente do dia:</label>
@@ -111,8 +111,8 @@
         </div>
         <div id="calc-bcb" class="box-modal">
             <span class="close-modal" onclick="fecharModal('calc-bcb')"><i class="fas fa-times"></i></span> <!-- Ícone de Fechar -->
-            <h2>Calculadora do Banco Central</h2>
             <div class="calculator">
+                <h2>Calculadora do Banco Central</h2>
                 <label for="meses">Nº de Meses:</label>
                 <input type="text" id="meses"><br>
                 <label for="taxa-juros">Taxa de Juros Mensal (%):</label>
@@ -164,6 +164,20 @@
         
         if (modal) {
             modal.classList.remove('active');
+            container.classList.remove('active');
+        }
+    }
+
+    function fecharModalFora(event) {
+        var modais = document.querySelectorAll('.box-modal');
+        var container = document.querySelector('.container-calc');
+        
+        if (event.target.classList.contains('container-calc')) { // Verifica se clicou fora do modal
+            modais.forEach(function(modal) {
+                if (modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
             container.classList.remove('active');
         }
     }

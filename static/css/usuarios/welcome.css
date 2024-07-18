@@ -1,0 +1,69 @@
+/* Definição das variáveis de cor */
+:root {
+    --white: #fff;
+    --blue: #4b84fe;
+    --colorDark: #1b253d;
+    --colorLight: #99a0b0;
+    --red: #fa5b67;
+    --yellow: #ffbb09;
+    --bg: #f5f5fa;
+    --bgDark: #ede8f0;
+  }
+  
+  /* Estilo para o container principal */
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg); /* Fundo principal */
+    font-family: 'Open Sans', Helvetica, sans-serif; /* Fonte principal */
+    color: var(--colorLight); /* Cor do texto */
+  }
+  
+  /* Estilo para a caixa de título */
+  .container .box.title {
+    height: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* Tamanho do título */
+    color: var(--colorDark); /* Cor do título */
+  }
+  
+  /* Estilo para o dashboard */
+  .container .box.dashboard {
+    height: 50vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+  }
+  
+  /* Estilo para as informações dentro do dashboard */
+  .container .box.dashboard .box-info {
+    width: 250px;
+    height: 150px;
+    background-color: var(--white); /* Cor de fundo das caixas de informação */
+    border-radius: 5px; /* Borda arredondada */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
+
+  /* Estilo para o texto dentro das caixas de informação */
+  .container .box.dashboard .box-info h4 {
+    color: var(--colorDark); /* Cor do título */
+    font-size: 16px; /* Tamanho do texto */
+  }
+  
+  .container .box.dashboard .box-info span {
+    font-size: 24px; /* Tamanho do número */
+    font-weight: bold; /* Negrito */
+  }
+  

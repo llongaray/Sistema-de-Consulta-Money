@@ -5,7 +5,7 @@ from apps.usuarios.forms import LoginForms, RegistroForms
 from django.contrib.auth.models import User
 
 from django.contrib import auth
-
+from apps.consultas.models import Cliente, MatriculaDebitos
 from django.contrib import messages
 
 def login_index(request):
@@ -69,4 +69,14 @@ def logout(request):
     return redirect('usuarios:login')
 
 def welcome(request):
-    return render(request, 'usuarios/welcome.html')
+    # Contar o número total de clientes
+    total_clientes = Cliente.objects.count()
+
+    # Contar o número total de débitos (considerando cada débito como uma linha na tabela)
+    total_debitos = MatriculaDebitos.objects.count()
+
+    context = {
+        'total_clientes': total_clientes,
+        'total_debitos': total_debitos,
+    }
+    return render(request, 'usuarios/welcome.html', context)
