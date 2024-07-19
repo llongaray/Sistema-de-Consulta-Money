@@ -109,8 +109,10 @@ def consulta_cliente(request):
     
     if cpf_cliente:
         try:
-            cliente = Cliente.objects.get(cpf=cpf_cliente)
-            return redirect('consulta:ficha_cliente_cpf', cpf=cpf_cliente)
+            # Aqui garantimos que o CPF está sem os caracteres '.' e '-'
+            cpf_cliente_limpo = cpf_cliente.replace('.', '').replace('-', '')
+            cliente = Cliente.objects.get(cpf=cpf_cliente_limpo)
+            return redirect('consulta:ficha_cliente_cpf', cpf=cpf_cliente_limpo)
         except Cliente.DoesNotExist:
             return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
     else:

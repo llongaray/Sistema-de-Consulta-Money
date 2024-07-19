@@ -21,11 +21,14 @@ $(document).ready(function() {
     $('#formConsulta').on('submit', function(event) {
         event.preventDefault();
         var cpfCliente = $('#cpfCliente').val();
+        // Remove os caracteres '.' e '-'
+        var cpfClienteLimpo = cpfCliente.replace(/\./g, '').replace(/-/g, '');
+        console.log('CPF Limpo: ' + cpfClienteLimpo);  // Adicionado para debug
         $.ajax({
-            url: '{% url "consulta:consulta_cliente" %}?cpf_cliente=' + cpfCliente,
+            url: '{% url "consulta:consulta_cliente" %}?cpf_cliente=' + cpfClienteLimpo,
             type: 'GET',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest'  // Adiciona o cabeçalho esperado
+                'X-Requested-With': 'XMLHttpRequest'
             },
             success: function(response) {
                 $('#resultadoConsulta').html(response);
