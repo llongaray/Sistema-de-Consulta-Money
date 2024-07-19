@@ -103,20 +103,21 @@ def ficha_cliente(request, cpf):
     return render(request, 'consultas/ficha_cliente.html', context)
 
 
-@require_http_methods(["GET"])
+@require_http_methods(["POST", "GET"])
 def consulta_cliente(request):
-    cpf_cliente = request.GET.get('cpf_cliente', None)
-    
-    if cpf_cliente:
-        try:
-            # Aqui garantimos que o CPF está sem os caracteres '.' e '-'
+    mensagem = ""
+
+    if request.method == "POST":
+        cpf_cliente = request.POST.get('cpf_cliente', None)
+        if cpf_cliente:
             cpf_cliente_limpo = cpf_cliente.replace('.', '').replace('-', '')
-            cliente = Cliente.objects.get(cpf=cpf_cliente_limpo)
-            return redirect('consulta:ficha_cliente_cpf', cpf=cpf_cliente_limpo)
-        except Cliente.DoesNotExist:
-            return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
-    else:
-        return render(request, 'consultas/consulta_cliente.html')
+            try:
+                cliente = Cliente.objects.get(cpf=cpf_cliente_limpo)
+                return redirect('consulta:ficha_cliente_cpf', cpf=cpf_cliente_limpo)
+            except Cliente.DoesNotExist:
+                mensagem = "Cliente não encontrado!"
+
+    return render(request, 'consultas/consulta_cliente.html', {'mensagem': mensagem})
 
 
 
