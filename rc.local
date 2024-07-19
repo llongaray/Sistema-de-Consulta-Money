@@ -1,8 +1,0 @@
-#!/bin/bash
-# /etc/rc.local
-
-# Execute start_django.sh
-/home/money/app_money/Sistema-de-Consulta-Money/start.sh
-
-exit 0
-
