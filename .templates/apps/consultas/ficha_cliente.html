@@ -60,12 +60,10 @@
                 <tr>
                     <th>Matrícula</th>
                     <th>BANCO</th>
+                    <th>Orgão</th>
                     <th>PMT</th>
                     <th>PRAZO</th>
                     <th>TIPO CONTRATO</th>
-                    <th>Créditos</th>
-                    <th>Débitos</th>
-                    <th>Líquido</th>
                     <th>Margem</th>
                 </tr>
             </thead>
@@ -74,12 +72,10 @@
                 <tr>
                     <td>{{ contrato.matricula}}</td>
                     <td>{{ contrato.banco }}</td>
+                    <td>{{ contrato.orgao }}</td>
                     <td>{{ contrato.pmt }}</td>
                     <td>{{ contrato.prazo }}</td>
                     <td>{{ contrato.tipo_contrato }}</td>
-                    <td>{{ contrato.creditos }}</td>
-                    <td>{{ contrato.debito }}</td>
-                    <td>{{ contrato.liquido }}</td>
                     <td>{{ contrato.margem }}</td>
                 </tr>
                 {% endfor %}
