@@ -17,25 +17,12 @@ from django.contrib.auth.decorators import login_required
 # Configurando o logger
 logger = logging.getLogger(__name__)
 
-@require_http_methods(["GET"])
-def consulta_cliente(request):
-    cpf_cliente = request.GET.get('cpf_cliente', None)
-    
-    if cpf_cliente:
-        try:
-            cliente = Cliente.objects.get(cpf=cpf_cliente)
-            return redirect('consulta:ficha_cliente_cpf', cpf=cpf_cliente)
-        except Cliente.DoesNotExist:
-            return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
-    else:
-        return render(request, 'consultas/consulta_cliente.html')
-
 def ficha_cliente(request, cpf):
     cliente = get_object_or_404(Cliente, cpf=cpf)
     matriculas_db = MatriculaDebitos.objects.filter(cliente=cliente)
     
-    margens = []  # Lista para armazenar as margens
-    first_margem = 0  # Variável para controlar a primeira inserção
+    margens = {}  # Dicionário para armazenar as margens
+    cont_margem = 0  # Variável para contar as margens
     
     matriculas = []  # Lista para armazenar as matrículas
     
@@ -70,27 +57,35 @@ def ficha_cliente(request, cpf):
             'exc_qtd': matricula.exc_qtd,
         })
         
-        # Verifica duplicidade apenas após a primeira inserção
-        if first_margem > 0:
-            print('first é: ' + str(first_margem))
-            if matricula.saldo_35 not in margens:
-                margens.append({
-                    'saldo_35': matricula.saldo_35,
-                    'saldo_5': matricula.saldo_5,
-                    'beneficio_saldo_5': matricula.beneficio_saldo_5,
-                })
-        else:
-            print('first é 0')
-            margens.append({
+        # Verifica se é a primeira margem
+        if cont_margem == 0:
+            margens[(matricula.saldo_35, matricula.saldo_5, matricula.beneficio_saldo_5)] = {
                 'saldo_35': matricula.saldo_35,
                 'saldo_5': matricula.saldo_5,
                 'beneficio_saldo_5': matricula.beneficio_saldo_5,
-            })
-            print("saldo_35: " + str(matricula.saldo_35))
-            print("saldo_5: " + str(matricula.saldo_5))
-            print("beneficio_saldo_5: " + str(matricula.beneficio_saldo_5))
-            first_margem += 1
-    
+            }
+            cont_margem += 1
+        else:
+            # Verifica se a margem atual já está no dicionário
+            if (matricula.saldo_35, matricula.saldo_5, matricula.beneficio_saldo_5) not in margens:
+                margens[(matricula.saldo_35, matricula.saldo_5, matricula.beneficio_saldo_5)] = {
+                    'saldo_35': matricula.saldo_35,
+                    'saldo_5': matricula.saldo_5,
+                    'beneficio_saldo_5': matricula.beneficio_saldo_5,
+                }
+
+    # Verifica se há duplicatas na lista de margens (considerando apenas os números antes da vírgula e os dois primeiros números depois da vírgula)
+    margens_unicas = {}
+    for chave, valor in margens.items():
+        rounded_saldo_35 = round(valor['saldo_35'], 2)
+        rounded_saldo_5 = round(valor['saldo_5'], 2)
+        rounded_beneficio_saldo_5 = round(valor['beneficio_saldo_5'], 2)
+        
+        chave_arredondada = (rounded_saldo_35, rounded_saldo_5, rounded_beneficio_saldo_5)
+        
+        if chave_arredondada not in margens_unicas:
+            margens_unicas[chave_arredondada] = valor
+
     context = {
         'cliente': {
             'nome': cliente.nome,
@@ -101,11 +96,27 @@ def ficha_cliente(request, cpf):
             'situacao_funcional': cliente.situacao_funcional,
             'rjur': cliente.rjur,
         },
-        'margens': margens,  # Passa a lista de margens ao contexto
+        'margens': list(margens_unicas.values()),  # Passa a lista de margens únicas ao contexto
         'matriculas': matriculas,  # Adiciona a lista de matrículas ao contexto
     }
     print("fim ficha")
     return render(request, 'consultas/ficha_cliente.html', context)
+
+
+@require_http_methods(["GET"])
+def consulta_cliente(request):
+    cpf_cliente = request.GET.get('cpf_cliente', None)
+    
+    if cpf_cliente:
+        try:
+            cliente = Cliente.objects.get(cpf=cpf_cliente)
+            return redirect('consulta:ficha_cliente_cpf', cpf=cpf_cliente)
+        except Cliente.DoesNotExist:
+            return JsonResponse({'error': 'Cliente não encontrado'}, status=404)
+    else:
+        return render(request, 'consultas/consulta_cliente.html')
+
+
 
 def normalize_cpf(cpf):
     # Remove todos os caracteres não numéricos
