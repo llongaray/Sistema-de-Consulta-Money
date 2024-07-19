@@ -4,13 +4,11 @@ db.sqlite3
 django.service
 lista_de_arquivos.txt
 Lister.py
-logging_utils.py
 manage.py
 rc.local
 requirements.txt
 .templates
 apps
-logs
 media
 setup
 static
@@ -131,6 +129,7 @@ media\csv
 media\csv\CONTRATOS_PENSIONISTAS.csv
 media\csv\CONTRATOS_PENSIONISTAS2.csv
 media\csv\CONTRATOS_SERVIDORES_1.csv
+media\csv\CONTRATOS_SERVIDORES_2.csv
 setup\asgi.py
 setup\settings.py
 setup\urls.py
