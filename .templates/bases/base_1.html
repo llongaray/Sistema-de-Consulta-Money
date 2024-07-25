@@ -19,6 +19,7 @@
     {% include 'partials/_menu.html' %}
     <main>
         {% block content %}{% endblock %}
+        {% include 'partials/_footer.html' %}
     </main>
     <div class="fav-links-container">
         <!-- ICONES PARA ABRIR E FECHAR-->
@@ -33,7 +34,6 @@
         </div>
     </div>
     <script src="{% static 'fav-links.js' %}"></script>
-    {% include 'partials/_footer.html' %}
     {% block addjs_extra %}{% endblock %}
 </body>
 </html>

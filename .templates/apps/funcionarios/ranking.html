@@ -1,0 +1,87 @@
+<!-- templates/funcionarios/ranking.html -->
+{% extends 'bases/base.html' %}
+{% load static %}
+
+{% block addtitle %}<title>Ranking</title>{% endblock %}
+
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'funcionarios/ranking.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="ranking-container">
+    <!-- O sub-container será adicionado dinamicamente pelo JavaScript -->
+</div>
+<div class="list-container">
+    <!-- Lista de valores será renderizada aqui pelo JavaScript -->
+</div>
+{% endblock %}
+
+{% block addjs_extra %}
+<script>
+    function renderRanking(valores, porcentagem, infoColab, listaValores) {
+        const rankingContainer = document.getElementById('ranking-container');
+        const listContainer = document.querySelector('.list-container');
+        
+        // Limpar o conteúdo existente
+        rankingContainer.innerHTML = '';
+        listContainer.innerHTML = ''; // Limpar lista
+
+        // Adicionar o título
+        const titleHtml = `<span class="box-title"><h3 class="title_ranking">Ranking dos melhores vendedores</h3></span>`;
+        rankingContainer.innerHTML += titleHtml;
+
+        // Criar o sub-container e adicioná-lo ao rankingContainer
+        const subContainer = document.createElement('div');
+        subContainer.id = 'sub-container';
+
+        // Adicionar os itens de ranking ao sub-container
+        infoColab.forEach((colab, index) => {
+            const value = parseFloat(valores[`top_${index + 1}`]).toFixed(2);
+            const percentage = porcentagem[`top_${index + 1}`];
+
+            const rankingHtml = `
+                <div class="container_bar">
+                    <img src="${colab.foto}" class="foto" alt="Foto de ${colab.nome_completo}">
+                    <p class="name_colab">${colab.nome_completo}</p>
+                    <div class="box-bar">
+                        <div class="progress_bar" style="width: ${percentage}%">
+                            <p>${value}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            subContainer.innerHTML += rankingHtml; // Adiciona ao sub-container
+        });
+
+        // Adicionar o sub-container ao rankingContainer
+        rankingContainer.appendChild(subContainer);
+
+        // Adicionar os itens da lista ao listContainer
+        listaValores.forEach((item) => {
+            const listItemHtml = `
+                <div class="list-item${item.new ? ' new' : ''}">
+                    <p>${item.nome_completo}</p>
+                    <p>${item.valor_est.toFixed(2)}</p>
+                    <p>${item.data}</p>
+                </div>
+            `;
+            listContainer.innerHTML += listItemHtml;
+        });
+    }
+
+    function fetchRankingData() {
+        fetch("{% url 'colab:update_ranking' %}")
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data fetched:', data);  // Linha de depuração
+                renderRanking(data.valores, data.porcentagem, data.infoColab, data.lista_valores);
+            })
+            .catch(error => console.error('Error fetching ranking data:', error));
+    }
+
+    // Buscar dados do ranking imediatamente e depois a cada 30 segundos
+    fetchRankingData();
+    setInterval(fetchRankingData, 30000);
+</script>
+{% endblock %}

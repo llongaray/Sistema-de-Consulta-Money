@@ -1,0 +1,52 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+
+{% block addtitle %}<title>Money Importe Funcionários</title>{% endblock %}
+
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'funcionarios/importe.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card" id="funcionarios">
+        <form id="form-funcionarios" action="{% url 'colab:import_csv' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="csv_file">Importar CSV de Funcionários:</label>
+                <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <div class="card" id="money">
+        <form id="form-money" action="{% url 'colab:import_money' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="csv_file">Importar CSV de Valores de Vendas:</label>
+                <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <div class="card" id="import_photo">
+        <form id="form-photo" action="{% url 'colab:import_photo' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="funcionario">Funcionário:</label>
+                <select name="funcionario" id="funcionario" required>
+                    <option value="" selected disabled>Selecione um funcionário</option>
+                    {% for funcionario in funcionarios %}
+                        <option value="{{ funcionario.id }}">{{ funcionario.nome_completo }} ({{ funcionario.cpf }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="photo">Upload de Foto:</label>
+                <input type="file" name="photo" id="photo" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

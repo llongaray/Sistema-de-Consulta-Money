@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.consultas.apps.ConsultasConfig',
     'apps.vendas.siape.apps.SiapeConfig',
-    'apps.usuarios.apps.UsuariosConfig'
+    'apps.usuarios.apps.UsuariosConfig',
+    'apps.funcionarios.apps.FuncionariosConfig'
 ]
 
 AUTHENTICATION_BACKENDS = [

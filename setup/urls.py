@@ -6,4 +6,5 @@ urlpatterns = [
     #urls apps
     path('', include('apps.consultas.urls')),
     path('', include('apps.usuarios.urls')),
+    path('', include('apps.funcionarios.urls')),
 ]
