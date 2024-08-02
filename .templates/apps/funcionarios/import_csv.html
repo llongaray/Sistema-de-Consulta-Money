@@ -1,0 +1,228 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+
+{% block addtitle %}<title>Importar Dados</title>{% endblock %}
+
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'funcionarios/import_csv.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Seção de Funcionários -->
+    <section id="funcionarios">
+        <div class="card" id="card-1">
+            <div class="sub-card" id="sub-card-1">
+                <!-- Formulário para importação manual de funcionários -->
+                <form id="form-manual-funcionarios" action="{% url 'colab:import_manual' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="nome_completo">Nome Completo:</label>
+                        <input type="text" name="nome_completo" id="nome_completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" name="cpf" id="cpf" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="setor">Setor:</label>
+                        <select name="setor" id="setor" required>
+                            <option value="" disabled selected>Selecione um setor</option>
+                            <option value="siape">SIAPE</option>
+                            <option value="inss">INSS</option>
+                            <option value="loja">LOJA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="localidade">Localidade:</label>
+                        <select name="localidade" id="localidade" required>
+                            <option value="" selected disabled>Selecione uma localidade</option>
+                            <option value="porto_alegre">Porto Alegre</option>
+                            <option value="santa_maria">Santa Maria</option>
+                            <option value="sao_leopoldo">São Leopoldo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Adicionar Funcionário</button>
+                </form>
+            </div>
+            <div class="sub-card" id="sub-card-2">
+                <!-- Formulário para upload de CSV de funcionários -->
+                <form id="form-csv-funcionarios" action="{% url 'colab:import_csv' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="csv_file">Arquivo CSV:</label>
+                        <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar CSV</button>
+                </form>
+            </div>
+        </div>
+        <div class="card" id="card-2">
+            <!-- Formulário para upload de foto -->
+            <form id="form-photo" action="{% url 'colab:import_photo' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="funcionario">Funcionário:</label>
+                    <select name="funcionario" id="funcionario" required>
+                        <option value="" selected disabled>Selecione um funcionário</option>
+                        {% for funcionario in funcionarios %}
+                            <option value="{{ funcionario.id }}">{{ funcionario.nome_completo }} ({{ funcionario.cpf }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Upload de Foto:</label>
+                    <input type="file" name="photo" id="photo" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Seção de Valores -->
+    <section id="money">
+        <div class="card" id="card-1">
+            <div class="sub-card" id="sub-card-1">
+                <!-- Formulário para importação manual de valores -->
+                <form id="form-manual-money" action="{% url 'colab:import_money_manual' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="funcionario">Funcionário:</label>
+                        <select name="funcionario" id="funcionario" required>
+                            <option value="" selected disabled>Selecione um funcionário</option>
+                            {% for funcionario in funcionarios %}
+                                <option value="{{ funcionario.id }}">{{ funcionario.nome_completo }} ({{ funcionario.cpf }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="valor_est">Valor Estimado:</label>
+                        <input type="text" name="valor_est" id="valor_est" placeholder="R$ 0,00" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Adicionar Valor</button>
+                </form>
+            </div>
+            <div class="sub-card" id="sub-card-2">
+                <!-- Formulário para upload de CSV de valores -->
+                <form id="form-csv-money" action="{% url 'colab:import_money_csv' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="csv_file">Arquivo CSV:</label>
+                        <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar CSV</button>
+                </form>
+            </div>
+        </div>
+        <div class="card card-tabela" id="card-2">
+            <!-- Tabela para exibir valores já adicionados -->
+            <div class="card-header">Valores Adicionados</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Valor Estimado</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registro in registros %}
+                        <tr>
+                            <td>R$ {{ registro.valor_est|floatformat:2 }}</td>
+                            <td>{{ registro.status|yesno:"Pago,Não Pago" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">Nenhum registro encontrado.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Metas -->
+    <section id="metas">
+        <div class="card" id="card-1">
+            <!-- Formulário para adicionar metas -->
+            <form id="form-metas" action="{% url 'colab:import_metas' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="valor">Valor:</label>
+                    <input type="text" name="valor" id="valor" placeholder="R$ 0,00" required>
+                </div>
+                <div class="form-group">
+                    <label for="setor">Setor:</label>
+                    <select name="setor" id="setor" required>
+                        <option value="" disabled selected>Selecione um setor</option>
+                        <option value="SIAPE">SIAPE</option>
+                        <option value="LOJA/INSS_POA">LOJA/INSS POA</option>
+                        <option value="LOJA/INSS_SLE">LOJA/INSS SLE</option>
+                        <option value="Geral">Geral</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="range_data_inicio">Data de Início:</label>
+                    <input type="date" name="range_data_inicio" id="range_data_inicio" required>
+                </div>
+                <div class="form-group">
+                    <label for="range_data_final">Data de Fim:</label>
+                    <input type="date" name="range_data_final" id="range_data_final" required>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <select name="descricao" id="descricao" required>
+                        <option value="" disabled selected>Selecione uma descrição</option>
+                        <option value="Individual">Individual</option>
+                        <option value="Equipe">Equipe</option>
+                        <option value="Geral">Geral</option>
+                        <option value="Bônus">Bônus</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Meta</button>
+            </form>
+        </div>
+
+        <div class="card card-tabela" id="card-2">
+            <!-- Tabela para exibir metas já adicionadas -->
+            <div class="card-header">Metas Adicionadas</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Valor</th>
+                            <th>Setor</th>
+                            <th>Período (De: - À)</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for meta in metas %}
+                        <tr>
+                            <td>R$ {{ meta.valor|floatformat:2 }}</td>
+                            <td>{{ meta.setor }}</td>
+                            <td>{{ meta.range_data_inicio|date:"d/m/Y" }} à {{ meta.range_data_final|date:"d/m/Y" }}</td>
+                            <td>{{ meta.descricao }}</td>
+                            <td>{{ meta.status|yesno:"Ativa,Inativa" }}</td>
+                            <td>
+                                <a href="{% url 'colab:alterar_status_meta' meta.id %}" class="btn btn-secondary">Alterar Status</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6">Nenhuma meta encontrada.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+{% endblock %}

@@ -3,12 +3,19 @@
 <!-- MENU SUPERIOR GERAL -->
 <nav id="menu-navbar">
     <div id="logo">
-        <a href="#"><img src="{% static 'logo-horizontal.png' %}" alt="Logo Money System"></a>
+        <a href="{% url 'colab:render_ranking' %}"><img src="{% static 'logo-horizontal.png' %}" alt="Logo Money System"></a>
     </div>
     <div id="menu">
         <ul>
-            <li><a href="{% url 'consulta:gerenciamento' %}">Admin</a></li>
+            {% if user.is_authenticated %}
+                <!-- Itens visíveis apenas para usuários autenticados -->
+                <li><a href="{% url 'consulta:gerenciamento' %}">Admin</a></li>
+                <li><a href="{% url 'colab:importar_funcionarios' %}">Funcionarios</a></li>
+                <li><a href="{% url 'colab:lista_registros' %}">Tabela Vendas</a></li>
+            {% endif %}
+            <!-- Itens visíveis para todos os usuários -->
             <li><a href="{% url 'consulta:consulta_cliente' %}">SIAPE</a></li>
+            <li><a href="{% url 'colab:render_ranking' %}">Ranking</a></li>
         </ul>
     </div>
     <div id="login-logout">
@@ -18,7 +25,7 @@
                 <a href="{% url 'usuarios:logout' %}"><i class="fas fa-sign-out-alt"></i></a> <!-- Link para logout com ícone -->
             </p>
         {% else %}
-            <p><a href="#">Entrar</a> ou <a href="#">Cadastrar</a></p>
+            <p><a href="{% url 'usuarios:login' %}">Entrar</a>
         {% endif %}
     </div>
 </nav>

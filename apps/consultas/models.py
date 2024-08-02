@@ -43,8 +43,5 @@ class MatriculaDebitos(models.Model):
     arq_upag = models.CharField(max_length=50, null=True, blank=True)
     exc_qtd = models.IntegerField(null=True, blank=True)
     
-    class Meta:
-        unique_together = ('cliente', 'matricula', 'rubrica')  # Ajustado para rubrica
-    
     def __str__(self):
         return f"{self.cliente} - {self.matricula} - {self.rubrica}"

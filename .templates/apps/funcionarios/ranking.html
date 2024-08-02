@@ -1,0 +1,123 @@
+<!-- templates/funcionarios/ranking.html -->
+{% extends 'bases/base.html' %}
+{% load static %}
+
+{% block addtitle %}<title>Ranking</title>{% endblock %}
+
+{% block addcss_extra %}
+<link rel="stylesheet" href="{% static 'funcionarios/ranking.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="metaContainer-box">
+    <!-- AQUI O JS DEVE ADICIONAR A BARRA DE PROGRESSÃO COM BASE NA META RECEBIDA DO PYTHON -->
+</div>
+<div id="ranking-container">
+    <!-- O sub-container será adicionado dinamicamente pelo JavaScript -->
+</div>
+{% endblock %}
+
+{% block addjs_extra %}
+<script>
+    function formatFloat(value) {
+        // Formata o número como ###.###,##
+        return parseFloat(value).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    function renderRanking(ranking, porcentagens, infoColab, meta) {
+        const rankingContainer = document.getElementById('ranking-container');
+        const metaContainer = document.querySelector('.metaContainer-box');
+        
+        // Limpar o conteúdo existente
+        rankingContainer.innerHTML = '';
+        metaContainer.innerHTML = '';
+
+        // Adicionar o título ao ranking
+        const titleHtml = `<span class="box-title"><h3 class="title_ranking">${meta.titulo}</h3></span>`;
+        rankingContainer.innerHTML += titleHtml;
+
+        // Criar o sub-container e adicioná-lo ao rankingContainer
+        const subContainer = document.createElement('div');
+        subContainer.id = 'sub-container';
+
+        // Adicionar os itens de ranking ao sub-container
+        ranking.forEach((item) => {
+            const colab = infoColab.find(c => c.id === item.funcionario_id);
+            const value = formatFloat(item.valor); // Usa 'item.valor' formatado
+            const percentage = porcentagens.find(p => p.funcionario_id === item.funcionario_id)?.porcentagem || 0; // Usa 'p.porcentagem'
+
+            const rankingHtml = `
+                <div class="container_bar">
+                    <span class="box-colab">
+                        <img src="${colab.foto}" class="foto" alt="Foto de ${colab.nome_completo}">
+                        <p class="name_colab">${colab.nome_completo}</p>
+                    </span>
+                    <div class="box-bar">
+                        <div class="progress_bar" style="width: ${percentage}%">
+                            <p class="volume">${value}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            subContainer.innerHTML += rankingHtml; // Adiciona ao sub-container
+        });
+
+        // Adicionar o sub-container ao rankingContainer
+        rankingContainer.appendChild(subContainer);
+
+        // Adicionar a barra de progresso da meta
+        if (meta) {
+            const metaValue = formatFloat(meta.valor_pago);
+            const metaValueTotal = formatFloat(meta.valor_pago + meta.valor_faltante);
+            const metaDescription = meta.descricao;
+            const metaPercentage = parseFloat(meta.porcentagem).toFixed(2);
+            const metaFaltando = formatFloat(meta.valor_faltante);
+
+            const metaHtml = `
+                <section id="meta">
+                    <div class="meta-container">
+                        <h4 class="meta-description">${metaDescription}</h4>
+                        <div class="meta-bar">
+                            <div class="progress_bar" style="width: ${metaPercentage}%">
+                                <p class="volume">${metaValueTotal}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+            metaContainer.innerHTML = metaHtml; // Adiciona a barra de progresso ao metaContainer
+
+            const infoDadosHtml = `
+                <span class="infoDados">
+                    <span class="acumulado">
+                        <h4 class="title-span">Acumulado</h4>
+                        <p class="valor-span">${metaValue}</p>
+                    </span>
+                    <span class="faltante">
+                        <h4 class="title-span">Faltante</h4>
+                        <p class="valor-span">${metaFaltando}</p>
+                    </span>
+                </span>
+            `;
+            metaContainer.innerHTML += infoDadosHtml; // Adiciona as informações ao metaContainer
+        }
+    }
+
+    function fetchRankingData() {
+        fetch("{% url 'colab:update_ranking' %}")
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data fetched:', data);  // Linha de depuração
+                renderRanking(data.ranking, data.porcentagens, data.infoColab_lista, data.meta);
+            })
+            .catch(error => console.error('Error fetching ranking data:', error));
+    }
+
+    // Buscar dados do ranking imediatamente e depois a cada 30 segundos
+    fetchRankingData();
+    setInterval(fetchRankingData, 30000);
+</script>
+{% endblock %}

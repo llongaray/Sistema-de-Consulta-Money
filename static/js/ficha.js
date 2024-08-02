@@ -3,7 +3,7 @@ function calcularMargem(margemId, coeficienteId, valorLiberadoId) {
     var margem = parseFloat(document.getElementById(margemId).value);
     var coeficiente = parseFloat(document.getElementById(coeficienteId).value);
     if (!isNaN(margem) && !isNaN(coeficiente)) {
-        var valorLiberado = margem * (coeficiente / 100);
+        var valorLiberado = margem / coeficiente;
         document.getElementById(valorLiberadoId).value = 'R$ ' + valorLiberado.toFixed(2);
     } else {
         alert('Por favor, preencha os campos corretamente.');

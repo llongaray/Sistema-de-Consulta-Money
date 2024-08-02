@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="{% static 'logo.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="{% static 'menu.css' %}">
+    <link rel="stylesheet" href="{% static 'fav-links.css' %}">
     <!-- Link para estilos externos (fontes e ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Inclui ícones do Font Awesome -->
     
@@ -19,6 +20,19 @@
     <main>
         {% block content %}{% endblock %}
     </main>
+    <div class="fav-links-container">
+        <!-- ICONES PARA ABRIR E FECHAR-->
+        <a href="#" class="btn-open"><i class="fas fa-anchor"></i></a>
+        <a href="#" class="btn-close" style="display:none;"><i class="fas fa-times"></i></a>
+
+        <!-- INFOS DE LINKS FAVORITOS -->
+        <div class="box-links">
+            <a href="http://192.168.18.250" target="_blank" rel="noopener noreferrer">Discador 250</a>
+            <a href="http://web.whatsapp.com/" target="_blank" rel="noopener noreferrer">WhatsApp Web</a>
+            <a href="http://boreal.stormfin.com.br/subadmin/index.php?rt=listar&pg=1" target="_blank" rel="noopener noreferrer">Stormfin</a>
+        </div>
+    </div>
+    <script src="{% static 'fav-links.js' %}"></script>
     {% include 'partials/_footer.html' %}
     {% block addjs_extra %}{% endblock %}
 </body>

@@ -1,0 +1,66 @@
+<!-- templates/funcionarios/lista_registros.html -->
+{% extends 'bases/base.html' %}
+{% load static %}
+
+{% block addtitle %}<title>Lista de Registros</title>{% endblock %}
+<!-- Adicione ao seu base.html ou diretamente ao template -->
+{% block addcss_extra %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    .btn {
+        text-decoration: none;
+        color: white;
+        background-color: #4caf50;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    .btn:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<h1>Lista de Registros Pendentes</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Funcionário</th>
+            <th>CPF do Cliente</th>
+            <th>Valor Estimado</th>
+            <th>Data</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for registro in registros %}
+        <tr>
+            <td>{{ registro.id }}</td>
+            <td>{{ registro.funcionario }}</td>
+            <td>{{ registro.cpf_cliente }}</td>
+            <td>{{ registro.valor_est }}</td>
+            <td>{{ registro.data }}</td>
+            <td>
+                <a href="{% url 'colab:alterar_status' registro.id %}" class="btn btn-success">Marcar como Pago</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Nenhum registro encontrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

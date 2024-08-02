@@ -7,34 +7,22 @@
 {% block content %}
 <section id="bloco-consulta">
     <h2>Consulta de Cliente</h2>
-    <form id="formConsulta">
+    <form action="{% url 'consulta:consulta_cliente' %}" method="post" id="formConsulta">
+        {% csrf_token %}
         <label for="cpfCliente">CPF do Cliente:</label>
         <input type="text" id="cpfCliente" name="cpf_cliente">
         <button type="submit">Consultar</button>
     </form>
-
-    <div id="resultadoConsulta"></div>
+    <h4 class="alert-erro" style="display: none;"></h4>
 </section>
 
 <script>
-$(document).ready(function() {
-    $('#formConsulta').on('submit', function(event) {
-        event.preventDefault();
-        var cpfCliente = $('#cpfCliente').val();
-        $.ajax({
-            url: '{% url "consulta:consulta_cliente" %}?cpf_cliente=' + cpfCliente,
-            type: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'  // Adiciona o cabeçalho esperado
-            },
-            success: function(response) {
-                $('#resultadoConsulta').html(response);
-            },
-            error: function(xhr, errmsg, err) {
-                console.log(xhr.status + ": " + xhr.responseText);
-            }
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        var mensagem = "{{ mensagem|escapejs }}";
+        if (mensagem) {
+            document.querySelector('.alert-erro').textContent = mensagem;
+            document.querySelector('.alert-erro').style.display = 'block';
+        }
     });
-});
 </script>
 {% endblock %}

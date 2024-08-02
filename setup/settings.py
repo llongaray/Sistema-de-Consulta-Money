@@ -16,7 +16,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = True
 
 # Hosts permitidos durante o desenvolvimento
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.18.236', '192.168.18.223', '192.168.18.171']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.18.236', '192.168.18.223', '192.168.18.171', '192.168.18.246']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.consultas.apps.ConsultasConfig',
     'apps.vendas.siape.apps.SiapeConfig',
-    'apps.usuarios.apps.UsuariosConfig'
+    'apps.usuarios.apps.UsuariosConfig',
+    'apps.funcionarios.apps.FuncionariosConfig'
 ]
 
 AUTHENTICATION_BACKENDS = [
